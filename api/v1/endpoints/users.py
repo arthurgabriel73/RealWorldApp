@@ -1,17 +1,27 @@
 from typing import List
 
 from fastapi import APIRouter, status, Depends, HTTPException, Response
+from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import EmailStr
 from sqlalchemy.exc import IntegrityError
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from starlette.responses import JSONResponse
 
+from core.auth import authenticate, create_access_token
+from core.security import generate_hash_password
 from models.user_model import UserModel
 from schemas.user_schema import UserSchemaBase, UserSchemaSignUp, UserSchemaUpdate
-from core.deps import get_session
-
+from core.deps import get_session, get_current_user
 
 router = APIRouter()
+
+
+# GET LOGGED
+@router.post('logged', response_model=UserSchemaBase)
+def get_logged(logged_user: UserModel = Depends(get_current_user)):
+    return logged_user
 
 
 # POST USER - singup
@@ -20,7 +30,8 @@ async def singup(user: UserSchemaSignUp, db: AsyncSession = Depends(get_session)
     new_user: UserModel = UserModel(
         username=user.username,
         email=user.email,
-        password=user.password)
+        password=generate_hash_password(user.password)
+    )
 
     async with db as session:
         try:
@@ -72,7 +83,7 @@ async def update_user(user_id: int, user: UserSchemaUpdate, db: AsyncSession = D
             if user.email:
                 updated_user.email = user.email
             if user.password:
-                updated_user.password = user.password
+                updated_user.password = generate_hash_password(user.password)
 
             await session.commit()
 
@@ -96,3 +107,15 @@ async def delete_user(user_id: int, db: AsyncSession = Depends(get_session)):
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found.')
+
+
+# POST LOGIN
+@router.post('/login')
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_session)):
+    user = await authenticate(username=str(form_data.username), password=form_data.password, db=db)
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid access data.")
+
+    return JSONResponse(content={'access_token': create_access_token(sub=str(user.id)), "token_type": "bearer"},
+                        status_code=status.HTTP_200_OK)
