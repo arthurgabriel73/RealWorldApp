@@ -1,7 +1,7 @@
-from pydantic import BaseModel as SCBaseModel, EmailStr
+from pydantic import BaseModel, EmailStr
 
 
-class UserSchemaBase(SCBaseModel):
+class User(BaseModel):
     id: int | None
     username: str
     email: EmailStr
@@ -10,11 +10,20 @@ class UserSchemaBase(SCBaseModel):
         orm_mode = True
 
 
-class UserSchemaSignUp(UserSchemaBase):
+class UserSignUp(User):
     password: str
 
 
-class UserSchemaUpdate(UserSchemaBase):
+class UserUpdate(User):
     username: str | None
     email: EmailStr | None
     password: str | None
+    image: str | None
+    bio: str | None
+
+
+class UserComplete(User):
+    username: str | None
+    email: EmailStr | None
+    image: str | None
+    bio: str | None
