@@ -9,11 +9,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from starlette.responses import JSONResponse
 
-from core.auth import authenticate, create_access_token
-from core.security import generate_hash_password
-from models.user_model import UserModel
-from schemas.user_schema import User, UserSignUp, UserUpdate, UserComplete
-from core.deps import get_session, get_current_user
+from src.core.auth import authenticate, create_access_token
+from src.core.security import generate_hash_password
+from src.models.user_model import UserModel
+from src.schemas.user_dto import User, UserSignUp, UserUpdate, UserComplete
+from src.core.deps import get_session, get_current_user
 
 router = APIRouter()
 

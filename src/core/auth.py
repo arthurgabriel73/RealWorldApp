@@ -10,9 +10,9 @@ from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from jose import jwt
 
-from models.user_model import UserModel
-from core.configs import settings
-from core.security import verify_password
+from src.models.user_model import UserModel
+from src.core.configs import settings
+from src.core.security import verify_password
 from pydantic import EmailStr
 
 
