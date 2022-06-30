@@ -1,5 +1,5 @@
 from core.configs import settings
-from core.database import engine
+from core.database import __engine
 
 
 import warnings
@@ -10,7 +10,7 @@ async def create_tables() -> None:
     import models.__all_models
     print("Creating tables on database...")
 
-    async with engine.begin() as conn:
+    async with __engine.begin() as conn:
         await conn.run_sync(settings.DBBaseModel.metadata.drop_all)
         await conn.run_sync(settings.DBBaseModel.metadata.create_all)
     print('Tables created successfully.')

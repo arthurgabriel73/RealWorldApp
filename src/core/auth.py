@@ -10,7 +10,7 @@ from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from jose import jwt
 
-from src.models.user_model import UserModel
+from src.models.users.entities.user import User
 from src.core.configs import settings
 from src.core.security import verify_password
 from pydantic import EmailStr
@@ -21,11 +21,11 @@ oauth2_schema = OAuth2PasswordBearer(
 )
 
 
-async def authenticate(email: EmailStr, password: str, db: AsyncSession) -> Optional[UserModel]:
+async def authenticate(email: EmailStr, password: str, db: AsyncSession) -> Optional[User]:
     async with db as session:
-        query = select(UserModel).filter(UserModel.email == email)
+        query = select(User).filter(User.email == email)
         result = await session.execute(query)
-        user: UserModel = result.scalars().unique().one_or_none()
+        user: User = result.scalars().unique().one_or_none()
 
         if not user:
             return None

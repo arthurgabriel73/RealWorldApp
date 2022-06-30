@@ -9,7 +9,7 @@ from sqlalchemy.future import select
 from src.core.auth import oauth2_schema
 from src.core.configs import settings
 from src.core.database import Session
-from src.models.user_model import UserModel
+from src.models.users.entities.user import User
 
 
 class TokenData(BaseModel):
@@ -27,7 +27,7 @@ async def get_session() -> Generator:
 
 async def get_current_user(
         db: Session = Depends(get_session),
-        token: str = Depends(oauth2_schema)) -> UserModel:
+        token: str = Depends(oauth2_schema)) -> User:
 
     credential_exception: HTTPException = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -53,9 +53,9 @@ async def get_current_user(
         raise credential_exception
 
     async with db as session:
-        query = select(UserModel).filter(UserModel.id == int(token_data.username))
+        query = select(User).filter(User.id == int(token_data.username))
         result = await session.execute(query)
-        user: UserModel = result.scalars().unique().one_or_none()
+        user: User = result.scalars().unique().one_or_none()
 
         if user is None:
             raise credential_exception
