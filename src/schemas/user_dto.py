@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 
 
-class UserDto(BaseModel):
+class UserDTO(BaseModel):
     id: int | None
     username: str
     email: EmailStr
@@ -10,11 +10,11 @@ class UserDto(BaseModel):
         orm_mode = True
 
 
-class UserSignUp(UserDto):
+class UserSignUp(UserDTO):
     password: str
 
 
-class UserUpdate(UserDto):
+class UserUpdate(UserDTO):
     username: str | None
     email: EmailStr | None
     password: str | None
@@ -22,7 +22,7 @@ class UserUpdate(UserDto):
     bio: str | None
 
 
-class UserComplete(UserDto):
+class UserComplete(UserDTO):
     username: str | None
     email: EmailStr | None
     image: str | None
