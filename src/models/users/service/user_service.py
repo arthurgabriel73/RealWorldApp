@@ -9,7 +9,7 @@ from src.models.users.user_repository import UserRepository
 from src.models.users.repositories.user_repository_impl import (
     user_repository_impl_factory,
 )
-from src.schemas.user_dto import UserDTO, UserSignUp
+from src.schemas.user_dto import UserDTO, UserSignUp, UserComplete, UserUpdate
 
 
 class UserService:
@@ -24,6 +24,10 @@ class UserService:
 
     async def register_new_user(self, user: UserSignUp) -> UserDTO:
         return await self.__user_repo.create_new_user(user)
+
+    async def update_user(self, user_id: int, user: UserUpdate) -> UserComplete:
+        user = await self.__user_repo.update_user(user_id, user)
+        return user
 
 
 @lru_cache()

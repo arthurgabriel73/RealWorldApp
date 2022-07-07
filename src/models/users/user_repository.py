@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 from src.models.users.entities.user import User
-from src.schemas.user_dto import UserSignUp
+from src.schemas.user_dto import UserSignUp, UserComplete, UserUpdate
 
 
 class UserRepository(ABC):
@@ -12,4 +12,8 @@ class UserRepository(ABC):
 
     @abstractmethod
     def create_new_user(self, user: UserSignUp) -> Optional[User]:
+        ...
+
+    @abstractmethod
+    def update_user(self, user_id: int, user: UserUpdate) -> Optional[User]:
         ...

@@ -14,16 +14,12 @@ class UserSignUp(UserDTO):
 
 
 class UserUpdate(UserDTO):
-    id: int | None
-    username: str | None
     email: EmailStr | None
-    password: str | None
-    image: str | None
     bio: str | None
+    image: str | None
 
 
 class UserComplete(UserDTO):
-    id: int | None
     username: str | None
     email: EmailStr | None
     image: str | None

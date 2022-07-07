@@ -4,7 +4,7 @@ from src.core.deps import get_current_user, get_session
 
 from src.models.users.entities.user import User
 from src.models.users.service.user_service import UserService, user_service_factory
-from src.schemas.user_dto import UserDTO, UserSignUp, UserComplete
+from src.schemas.user_dto import UserDTO, UserSignUp, UserComplete, UserUpdate
 
 USERS_URL = '/users'
 user_router = APIRouter(
@@ -24,3 +24,9 @@ async def register_user(
         user: UserSignUp, user_service: UserService = Depends(user_service_factory)
 ) -> UserDTO:
     return await user_service.register_new_user(user)
+
+
+@user_router.put("/{user_id}", response_model=UserComplete)
+async def update_user(user_id: int, user: UserUpdate, user_service: UserService = Depends(user_service_factory)
+                      ) -> UserComplete:
+    return await user_service.update_user(user_id, user)

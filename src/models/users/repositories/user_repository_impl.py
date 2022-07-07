@@ -11,9 +11,10 @@ from src.core.deps import get_session
 from src.core.security import generate_hash_password
 from src.exceptions.already_owned import email_already_registered
 
+
 from src.models.users.entities.user import User
 from src.models.users.user_repository import UserRepository
-from src.schemas.user_dto import UserSignUp, UserDTO
+from src.schemas.user_dto import UserSignUp, UserDTO, UserComplete, UserUpdate
 
 
 class UserRepositoryImpl(UserRepository):
@@ -48,19 +49,27 @@ class UserRepositoryImpl(UserRepository):
         except IntegrityError:
             email_already_registered()
 
+    async def update_user(self, user_id: int, user: UserUpdate) -> UserUpdate:
+        try:
+            async with AsyncSession(self.__engine) as session:
+                query = select(User).filter(User.id == user_id)
+                result = await session.execute(query)
+                user_update: UserUpdate = result.scalars().unique().one_or_none()
 
-"""
+                if user_update:
+                    if user.email:
+                        user_update.email = user.email
+                    if user.bio:
+                        user_update.bio = user.bio
+                    if user.image:
+                        user_update.image = user.image
 
-        async with AsyncSession(self.__engine) as session:
-            try:
-                session.add(new_user)
-                await session.commit()
+                    await session.commit()
 
-                return user
+        except IntegrityError:
+            email_already_registered()
 
-            except IntegrityError:
-                email_already_registered()
-"""
+        return user
 
 
 @lru_cache
