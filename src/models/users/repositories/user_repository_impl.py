@@ -49,6 +49,20 @@ class UserRepositoryImpl(UserRepository):
             email_already_registered()
 
 
+"""
+
+        async with AsyncSession(self.__engine) as session:
+            try:
+                session.add(new_user)
+                await session.commit()
+
+                return user
+
+            except IntegrityError:
+                email_already_registered()
+"""
+
+
 @lru_cache
 def user_repository_impl_factory(
         db_engine: AsyncEngine = Depends(db_engine_factory),
