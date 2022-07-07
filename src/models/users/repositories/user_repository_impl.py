@@ -1,13 +1,15 @@
 from functools import lru_cache
-from typing import Optional, List
 
 from fastapi import Depends
+from sqlalchemy.exc import IntegrityError
 
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 
-
 from src.core.database import db_engine_factory
+from src.core.deps import get_session
+from src.core.security import generate_hash_password
+from src.exceptions.already_owned import email_already_registered
 
 from src.models.users.entities.user import User
 from src.models.users.user_repository import UserRepository
@@ -15,7 +17,7 @@ from src.schemas.user_dto import UserSignUp, UserDTO
 
 
 class UserRepositoryImpl(UserRepository):
-    def __init__(self, engine: AsyncEngine):
+    def __init__(self, engine: AsyncEngine = Depends(get_session)):
         self.__engine = engine
 
     async def find_by_id(self, user_id: int) -> UserDTO:
@@ -24,7 +26,27 @@ class UserRepositoryImpl(UserRepository):
             result = await session.execute(query)
             user: UserDTO = result.scalars().unique().one_or_none()
 
+        return user
+
+# statement = select(User).where(User.id == user_id)
+# return session.scalars(statement).one_or_none() > AttributeError: 'coroutine' object has no attribute 'one_or_none'
+
+    async def create_new_user(self, user: UserSignUp) -> UserDTO:
+        new_user: User = User(
+            username=user.username,
+            email=user.email,
+            password=generate_hash_password(user.password)
+        )
+
+        try:
+            async with AsyncSession(self.__engine) as session:
+                session.add(new_user)
+                await session.commit()
+
             return user
+
+        except IntegrityError:
+            email_already_registered()
 
 
 @lru_cache

@@ -9,3 +9,7 @@ class UserRepository(ABC):
     @abstractmethod
     def find_by_id(self, user_id: int) -> Optional[User]:
         ...
+
+    @abstractmethod
+    def create_new_user(self, user: UserSignUp) -> Optional[User]:
+        ...

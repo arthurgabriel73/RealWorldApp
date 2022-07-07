@@ -9,7 +9,7 @@ from src.models.users.user_repository import UserRepository
 from src.models.users.repositories.user_repository_impl import (
     user_repository_impl_factory,
 )
-from src.schemas.user_dto import UserDTO
+from src.schemas.user_dto import UserDTO, UserSignUp
 
 
 class UserService:
@@ -21,6 +21,9 @@ class UserService:
         if user is None:
             raise user_not_found()
         return user
+
+    async def register_new_user(self, user: UserSignUp) -> UserDTO:
+        return await self.__user_repo.create_new_user(user)
 
 
 @lru_cache()

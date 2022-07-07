@@ -1,13 +1,15 @@
-from core.configs import settings
-from core.database import __engine
-
-
+import asyncio
 import warnings
+from src.core.configs import settings
+from src.core.database import __engine
+import src.models.__all_models
+
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 async def create_tables() -> None:
-    import models.__all_models
+
     print("Creating tables on database...")
 
     async with __engine.begin() as conn:
@@ -16,6 +18,5 @@ async def create_tables() -> None:
     print('Tables created successfully.')
 
 if __name__ == '__main__':
-    import asyncio
 
     asyncio.get_event_loop().run_until_complete(create_tables())

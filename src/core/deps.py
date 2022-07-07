@@ -17,7 +17,7 @@ class TokenData(BaseModel):
 
 
 async def get_session() -> Generator:
-    session: AsyncSession = Session()
+    session: AsyncSession = AsyncSession()
 
     try:
         yield session
