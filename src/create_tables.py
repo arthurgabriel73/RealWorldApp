@@ -2,7 +2,7 @@ import asyncio
 import warnings
 from src.core.configs import settings
 from src.core.database import __engine
-import src.models.__all_models
+import src.modules.__all_models
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)

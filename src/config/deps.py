@@ -9,7 +9,7 @@ from sqlalchemy.future import select
 from src.core.auth import oauth2_schema
 from src.core.configs import settings
 from src.core.database import Session
-from src.models.users.entities.user import User
+from src.modules.users.entities.user import User
 
 
 class TokenData(BaseModel):

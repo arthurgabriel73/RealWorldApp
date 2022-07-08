@@ -3,10 +3,10 @@ from functools import lru_cache
 from fastapi import Depends
 
 from src.exceptions.not_found import user_not_found
-from src.models.users import user_repository
-from src.models.users.entities.user import User
-from src.models.users.user_repository import UserRepository
-from src.models.users.repositories.user_repository_impl import (
+from src.modules.users import user_repository
+from src.modules.users.entities.user import User
+from src.modules.users.user_repository import UserRepository
+from src.modules.users.repositories.user_repository_impl import (
     user_repository_impl_factory,
 )
 from src.schemas.user_dto import UserDTO, UserSignUp, UserComplete, UserUpdate

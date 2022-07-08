@@ -12,8 +12,8 @@ from src.core.security import generate_hash_password
 from src.exceptions.already_owned import email_already_registered
 
 
-from src.models.users.entities.user import User
-from src.models.users.user_repository import UserRepository
+from src.modules.users.entities.user import User
+from src.modules.users.user_repository import UserRepository
 from src.schemas.user_dto import UserSignUp, UserDTO, UserComplete, UserUpdate
 
 

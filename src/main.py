@@ -3,7 +3,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from src.core.configs import settings
-from src.models.users.controllers.user_controller import user_router
+from src.modules.users.controllers.user_controller import user_router
 
 app = FastAPI(
     title='Real World App - API',

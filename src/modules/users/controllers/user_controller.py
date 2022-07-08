@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, status
 
 from src.core.deps import get_current_user, get_session
 
-from src.models.users.entities.user import User
-from src.models.users.service.user_service import UserService, user_service_factory
+from src.modules.users.entities.user import User
+from src.modules.users.service.user_service import UserService, user_service_factory
 from src.schemas.user_dto import UserDTO, UserSignUp, UserComplete, UserUpdate
 
 USERS_URL = '/users'
