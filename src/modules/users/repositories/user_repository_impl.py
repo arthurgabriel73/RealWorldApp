@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from src.core.database import db_engine_factory
 from src.core.deps import get_session
 from src.core.security import generate_hash_password
-from src.exceptions.already_owned import email_already_registered
+from src.exceptions.already_exists import email_already_registered
 
 
 from src.modules.users.entities.user import User
