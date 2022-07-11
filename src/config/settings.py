@@ -27,6 +27,9 @@ class Config:
     case_sensitive = True
 
 
+settings: Settings = Settings()
+
+
 @lru_cache
 def settings_factory() -> Settings:
     return Settings()

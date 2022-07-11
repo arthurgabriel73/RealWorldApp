@@ -1,11 +1,30 @@
-from pydantic import BaseModel, validator
 from pydantic.class_validators import Optional
+from pydantic import BaseModel, EmailStr, validator
 
 from src.tools.password_tools import check_password_strength, get_hash, get_salt
 
 
-class IncomingUserDTO(BaseModel):
+class UserDTO(BaseModel):
     username: str
+
+    class Config:
+        orm_mode = True
+
+
+class UserUpdate(UserDTO):
+    email: EmailStr | None
+    bio: str | None
+    image: str | None
+
+
+class UserComplete(UserDTO):
+    username: str | None
+    email: EmailStr | None
+    image: str | None
+    bio: str | None
+
+
+class IncomingUserDTO(UserDTO):
     password: str
 
     @validator("password")

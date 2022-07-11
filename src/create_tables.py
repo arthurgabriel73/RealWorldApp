@@ -1,7 +1,7 @@
 import asyncio
 import warnings
-from src.core.configs import settings
-from src.core.database import __engine
+from src.config.settings import settings
+from src.config.database_conn import __engine
 import src.modules.__all_models
 
 

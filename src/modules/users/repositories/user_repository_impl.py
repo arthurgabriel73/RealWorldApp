@@ -1,4 +1,5 @@
 from functools import lru_cache
+from typing import Optional
 
 from fastapi import Depends
 from sqlalchemy.exc import IntegrityError
@@ -6,48 +7,54 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 
-from src.core.database import db_engine_factory
-from src.core.deps import get_session
-from src.core.security import generate_hash_password
-from src.exceptions.already_exists import email_already_registered
-
+from src.config.database_conn import db_engine_factory
+from src.config.database_conn import get_session
+from src.exceptions.already_exists import UserAlreadyExists
 
 from src.modules.users.entities.user import User
 from src.modules.users.user_repository import UserRepository
-from src.schemas.user_dto import UserSignUp, UserDTO, UserComplete, UserUpdate
+from src.modules.users.dto.user_dto import UserDTO, UserUpdate
+from src.tools.uuid_tools import generate_uuid
 
 
 class UserRepositoryImpl(UserRepository):
     def __init__(self, engine: AsyncEngine = Depends(get_session)):
         self.__engine = engine
 
-    async def find_by_id(self, user_id: int) -> UserDTO:
+    async def find_by_id(self, user_id: str) -> UserDTO:
         async with AsyncSession(self.__engine) as session:
             query = select(User).filter(User.id == user_id)
             result = await session.execute(query)
             user: UserDTO = result.scalars().unique().one_or_none()
 
         return user
-
 # statement = select(User).where(User.id == user_id)
 # return session.scalars(statement).one_or_none() > AttributeError: 'coroutine' object has no attribute 'one_or_none'
 
-    async def create_new_user(self, user: UserSignUp) -> UserDTO:
-        new_user: User = User(
-            username=user.username,
-            email=user.email,
-            password=generate_hash_password(user.password)
-        )
+    async def find_user_by_username(self, username: str) -> UserDTO:
+        async with AsyncSession(self.__engine) as session:
+            query = select(User).where(User.username == username)
+            result = await session.execute(query)
+            user: UserDTO = result.scalars().unique().one_or_none()
 
+        return user
+
+    async def add_user(self, username: str, salted_hash: str) -> Optional[str]:
         try:
             async with AsyncSession(self.__engine) as session:
-                session.add(new_user)
-                await session.commit()
+                user = User(id=generate_uuid(), username=username, salted_hash=salted_hash)
+                stored_user = self.find_user_by_username(user.username)
+                if stored_user is not None:
+                    return None
 
-            return user
+                session.add(user)
+                await session.commit()
+                session.refresh(user)
+
+            return username
 
         except IntegrityError:
-            email_already_registered()
+            UserAlreadyExists(user.username)
 
     async def update_user(self, user_id: int, user: UserUpdate) -> UserUpdate:
         try:
@@ -67,7 +74,7 @@ class UserRepositoryImpl(UserRepository):
                     await session.commit()
 
         except IntegrityError:
-            email_already_registered()
+            UserAlreadyExists(user.username)
 
         return user
 
