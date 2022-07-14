@@ -16,7 +16,7 @@ user_router = APIRouter(
 
 @user_router.get("/{user_id}", response_model=UserComplete)
 async def get_user(
-        user_id: int, user_service: UserService = Depends(user_service_factory)
+        user_id: str, user_service: UserService = Depends(user_service_factory)
 ) -> UserDTO:
     return await user_service.find_user_by_id(user_id)
 

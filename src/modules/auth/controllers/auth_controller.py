@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from src.modules.auth.dto.token_dto import Token
 from src.modules.auth.services.auth_service import AuthService, auth_service_factory
 from src.modules.users.dto.user_dto import IncomingUserDTO, UserDTO
-
+from src.modules.users.entities.user_entity import User
 
 AUTH_URL = "/auth"
 
@@ -27,8 +27,8 @@ def get_user_from_token(
 async def sign_up(
         user: IncomingUserDTO = Body(),
         auth_service: AuthService = Depends(auth_service_factory)
-) -> None:
-    auth_service.save_user_in_repository(user)
+) -> UserDTO:
+    return await auth_service.save_user_in_repository(user)
 
 
 @auth_router.post("/token", response_model=Token)
@@ -36,8 +36,8 @@ async def get_access_token(
         form_data: OAuth2PasswordRequestForm = Depends(),
         auth_service: AuthService = Depends(auth_service_factory),
 ) -> Token:
-    user = IncomingUserDTO(username=form_data.username, passoword=form_data.password)
-    username = auth_service.authenticate_user(user)
+    user: IncomingUserDTO = User(username=form_data.username, salted_hash=form_data.password)
+    username = await auth_service.authenticate_user(user)
     return auth_service.create_access_token(username)
 
 """

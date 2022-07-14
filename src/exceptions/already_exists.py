@@ -6,7 +6,7 @@ class AssetAlreadyExists(APIException):
         message = (
             f"The {asset} identified by {identifier_name}: {identifier} already exists."
         )
-        super().__init__(message, 409)
+        super().__init__(message, 406)
 
 
 class UserAlreadyExists(AssetAlreadyExists):

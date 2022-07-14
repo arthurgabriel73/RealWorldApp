@@ -10,8 +10,9 @@ from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from src.config.database_conn import db_engine_factory
 from src.config.database_conn import get_session
 from src.exceptions.already_exists import UserAlreadyExists
+from src.modules.auth.entities.password_entity import Password
 
-from src.modules.users.entities.user import User
+from src.modules.users.entities.user_entity import User
 from src.modules.users.user_repository import UserRepository
 from src.modules.users.dto.user_dto import UserDTO, UserUpdate
 from src.tools.uuid_tools import generate_uuid
@@ -42,14 +43,16 @@ class UserRepositoryImpl(UserRepository):
     async def add_user(self, username: str, salted_hash: str) -> Optional[str]:
         try:
             async with AsyncSession(self.__engine) as session:
-                user = User(id=generate_uuid(), username=username, salted_hash=salted_hash)
-                stored_user = self.find_user_by_username(user.username)
+                user = User(id=generate_uuid(), username=username)
+                password = Password(password=salted_hash)
+                stored_user = await self.find_user_by_username(user.username)
                 if stored_user is not None:
                     return None
 
+                session.add(password)
                 session.add(user)
                 await session.commit()
-                session.refresh(user)
+                await session.refresh(user)
 
             return username
 

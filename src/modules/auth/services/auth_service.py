@@ -19,7 +19,7 @@ class AuthService:
         self.__user_service = user_service
         self.__settings = settings
 
-    def save_user_in_repository(self, user: IncomingUserDTO) -> None:
+    async def save_user_in_repository(self, user: IncomingUserDTO) -> UserDTO:
         """
     Saves a user in a implementation of the UsersRepository. The password is not saved directly but a string
     with a salt a blank space and the has of the password + salt is used in its place.
@@ -27,18 +27,20 @@ class AuthService:
     :return: None
     """
         salted_hash = user.get_salted_hash()
-        self.__user_service.add_user(user.username, salted_hash)
+        return await self.__user_service.add_user(user.username, salted_hash)
 
-    def authenticate_user(self, user: IncomingUserDTO) -> str:
+    async def authenticate_user(self, user: IncomingUserDTO) -> str:
         """
        Finds a user using its username than verifies if the passwords are the same.
        :param user: a user with username and password.
        :return: the verified user's username
        """
-        stored_user = self.__user_service.find_user_by_username(user.username)
+        stored_user = await self.__user_service.find_user_by_username(user.username)
         if stored_user is None:
             raise UserNotFound(user.username)
-        is_valid = stored_user.is_password_valid(user.password)
+
+        is_valid = stored_user.is_password_valid(user.salted_hash)
+
         if not is_valid:
             raise InvalidPassword()
         return user.username
