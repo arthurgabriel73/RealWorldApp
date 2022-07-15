@@ -11,7 +11,7 @@ class UserRepository(ABC):
         ...
 
     @abstractmethod
-    def add_user(self, username: str) -> Optional[User]:
+    def add_user(self, username: str, salted_hash: str) -> Optional[User]:
         ...
 
     @abstractmethod

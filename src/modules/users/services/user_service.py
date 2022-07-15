@@ -30,8 +30,7 @@ class UserService:
         return await self.__user_repo.find_user_by_username(username)
 
     async def add_user(self, username: str, salted_hash: str) -> UserDTO:
-        username = await self.__password_repo.add_password(username, salted_hash)
-        found_username = await self.__user_repo.add_user(username)
+        found_username = await self.__user_repo.add_user(username, salted_hash)
 
         if found_username is None:
             raise UserAlreadyExists(username)

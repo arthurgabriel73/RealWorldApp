@@ -8,14 +8,16 @@ from src.config.settings import Settings, settings_factory
 from src.exceptions.auth import CouldNotValidate, InvalidPassword, TokenHasExpired
 from src.exceptions.not_found import UserNotFound
 from src.modules.users.dto.user_dto import IncomingUserDTO, UserDTO, UserComplete
-from src.modules.users.entities.user_entity import User
+from src.modules.users.password_repository import PasswordRepository
+from src.modules.users.repositories.password_repository_impl import password_repository_impl_factory
 from src.modules.users.services.user_service import UserService, user_service_factory
 
 
 class AuthService:
     """Implements the actual logic of the authorization process"""
 
-    def __init__(self, user_service: UserService, settings: Settings) -> None:
+    def __init__(self, user_service: UserService, password_repository: PasswordRepository, settings: Settings) -> None:
+        self.__password_repository = password_repository
         self.__user_service = user_service
         self.__settings = settings
 
@@ -27,6 +29,8 @@ class AuthService:
     :return: None
     """
         salted_hash = user.get_salted_hash()
+        await self.__password_repository.add_password(user.username, salted_hash)
+
         return await self.__user_service.add_user(user.username, salted_hash)
 
     async def authenticate_user(self, user: IncomingUserDTO) -> str:
@@ -39,7 +43,7 @@ class AuthService:
         if stored_user is None:
             raise UserNotFound(user.username)
 
-        is_valid = stored_user.is_password_valid(user.salted_hash)
+        is_valid = stored_user.is_password_valid(user.password)
 
         if not is_valid:
             raise InvalidPassword()
@@ -55,7 +59,7 @@ class AuthService:
         token = jwt.encode(data_to_encode, self.__settings.TOKEN_SECRET)
         return Token(access_token=token)
 
-    def retrieve_user_from_token(self, token: str) -> UserComplete:
+    async def retrieve_user_from_token(self, token: str) -> UserComplete:
         """
        Decodes the Token, and returns the user that was encoded.
        :param token: A Token object
@@ -63,7 +67,7 @@ class AuthService:
        """
         try:
             data = jwt.decode(token, self.__settings.TOKEN_SECRET, algorithms=["HS256"])
-            stored_user = self.__user_service.find_user_by_username(data.get("sub"))
+            stored_user = await self.__user_service.find_user_by_username(data.get("sub"))
             if stored_user is None:
                 raise CouldNotValidate()
             return stored_user
@@ -76,6 +80,7 @@ class AuthService:
 @lru_cache
 def auth_service_factory(
         user_service: UserService = Depends(user_service_factory),
-        settings: Settings = Depends(settings_factory)
+        settings: Settings = Depends(settings_factory),
+        password_repository: PasswordRepository = Depends(password_repository_impl_factory)
 ) -> AuthService:
-    return AuthService(user_service, settings)
+    return AuthService(user_service, password_repository, settings)

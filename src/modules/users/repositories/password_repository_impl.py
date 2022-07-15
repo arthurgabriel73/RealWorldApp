@@ -16,7 +16,7 @@ class PasswordRepositoryImpl(PasswordRepository):
 
     async def add_password(self, username: str, salted_hash: str) -> str:
         async with AsyncSession(self.__engine) as session:
-            password = Password(password=salted_hash)
+            password = Password(user_password=salted_hash)
             session.add(password)
             await session.commit()
             await session.refresh(password)

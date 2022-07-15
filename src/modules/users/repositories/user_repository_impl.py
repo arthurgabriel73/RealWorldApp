@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 from src.config.database_conn import db_engine_factory
 from src.config.database_conn import get_session
 from src.exceptions.already_exists import UserAlreadyExists
+from src.modules.auth.entities.password_entity import Password
 
 from src.modules.users.entities.user_entity import User
 from src.modules.users.user_repository import UserRepository
@@ -38,10 +39,11 @@ class UserRepositoryImpl(UserRepository):
 
         return result.scalars().unique().one_or_none()
 
-    async def add_user(self, username: str) -> Optional[str]:
+    async def add_user(self, username: str, salted_hash: str) -> Optional[str]:
         try:
             async with AsyncSession(self.__engine) as session:
-                user = User(id=generate_uuid(), username=username)
+                password_id = select(Password.id).where(Password.user_password == salted_hash).scalar_subquery()
+                user = User(id=generate_uuid(), username=username, password_id=password_id)
                 stored_user = await self.find_user_by_username(user.username)
                 if stored_user is not None:
                     return None
