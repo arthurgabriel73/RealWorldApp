@@ -29,9 +29,10 @@ class AuthService:
     :return: None
     """
         salted_hash = user.get_salted_hash()
-        await self.__password_repository.add_password(user.username, salted_hash)
 
-        return await self.__user_service.add_user(user.username, salted_hash)
+        i = await self.__user_service.add_user(user.username, salted_hash)
+        await self.__password_repository.add_password(user.username, salted_hash)
+        return i
 
     async def authenticate_user(self, user: IncomingUserDTO) -> str:
         """

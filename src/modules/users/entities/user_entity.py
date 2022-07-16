@@ -10,7 +10,7 @@ class User(settings.settings_factory().DBBaseModel):
 
     id = Column("UUID", String, primary_key=True)
     username = Column(String, unique=True)
-    password_id = Column(Integer, ForeignKey("PASSWORD.id"), unique=True)
+    password_id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
 
     password = relationship("Password", back_populates="user")
 
