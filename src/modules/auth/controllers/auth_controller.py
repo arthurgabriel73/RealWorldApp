@@ -39,6 +39,3 @@ async def get_access_token(
     user: IncomingUserDTO = User(username=form_data.username, salted_hash=form_data.password)
     username = await auth_service.authenticate_user(user)
     return auth_service.create_access_token(username)
-
-"""
-sing up, get access token"""

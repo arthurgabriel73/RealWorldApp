@@ -1,15 +1,17 @@
 from functools import lru_cache
-from typing import Optional
+from typing import Optional, Any
 
 from fastapi import Depends
-from sqlalchemy.exc import IntegrityError
+import sqlalchemy.exc
 
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
+from typing_extensions import Coroutine
 
 from src.config.database_conn import db_engine_factory
 from src.config.database_conn import get_session
 from src.exceptions.already_exists import UserAlreadyExists
+from src.exceptions.database_exception import IntegrityError
 
 from src.modules.users.entities.user_entity import User
 from src.modules.users.user_repository import UserRepository
@@ -38,22 +40,18 @@ class UserRepositoryImpl(UserRepository):
 
         return result.scalars().unique().one_or_none()
 
-    async def add_user(self, username: str, salted_hash: str) -> Optional[str]:
+    async def add_user(self, username: str, salted_hash: str) -> str:
         try:
             async with AsyncSession(self.__engine) as session:
                 user = User(id=generate_uuid(), username=username)
-                stored_user = await self.find_user_by_username(user.username)
-                if stored_user is not None:
-                    return None
-
                 session.add(user)
                 await session.commit()
                 await session.refresh(user)
 
             return username
 
-        except IntegrityError:
-            UserAlreadyExists(user.username)
+        except sqlalchemy.exc.IntegrityError:
+            raise IntegrityError()
 
     async def update_user(self, user_id: int, user: UserUpdate) -> UserUpdate:
         try:
@@ -72,8 +70,8 @@ class UserRepositoryImpl(UserRepository):
 
                     await session.commit()
 
-        except IntegrityError:
-            UserAlreadyExists(user.username)
+        except sqlalchemy.exc.IntegrityError:
+            raise IntegrityError()
 
         return user
 

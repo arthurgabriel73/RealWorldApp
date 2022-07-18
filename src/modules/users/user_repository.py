@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, Any
+
+from typing_extensions import Coroutine
 
 from src.modules.users.entities.user_entity import User
 from src.modules.users.dto.user_dto import UserUpdate
@@ -11,7 +13,7 @@ class UserRepository(ABC):
         ...
 
     @abstractmethod
-    def add_user(self, username: str, salted_hash: str) -> Optional[User]:
+    def add_user(self, username: str, salted_hash: str) -> str:
         ...
 
     @abstractmethod

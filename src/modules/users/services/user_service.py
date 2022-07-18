@@ -1,9 +1,11 @@
 from functools import lru_cache
-from typing import Optional
+from typing import Optional, Any
 
 from fastapi import Depends
+from typing_extensions import Coroutine
 
 from src.exceptions.already_exists import UserAlreadyExists
+from src.exceptions.database_exception import IntegrityError
 from src.exceptions.not_found import UserNotFound
 from src.modules.users.entities.user_entity import User
 from src.modules.users.password_repository import PasswordRepository
@@ -29,12 +31,13 @@ class UserService:
     async def find_user_by_username(self, username: str) -> Optional[User]:
         return await self.__user_repo.find_user_by_username(username)
 
-    async def add_user(self, username: str, salted_hash: str) -> UserDTO:
-        found_username = await self.__user_repo.add_user(username, salted_hash)
+    async def add_user(self, username: str, salted_hash: str) -> str:
+        try:
+            new_user = await self.__user_repo.add_user(username, salted_hash)
+            return new_user
 
-        if found_username is None:
+        except IntegrityError:
             raise UserAlreadyExists(username)
-        return found_username
 
     async def update_user(self, user_id: int, user: UserUpdate) -> UserComplete:
         user = await self.__user_repo.update_user(user_id, user)
