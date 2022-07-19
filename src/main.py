@@ -3,6 +3,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from src.modules.auth.controllers import auth_controller
+from src.modules.profiles.controllers import profile_controller
 from src.modules.users.controllers import user_controller
 
 app = FastAPI(
@@ -12,6 +13,7 @@ app = FastAPI(
 
 app.include_router(auth_controller.auth_router)
 app.include_router(user_controller.user_router)
+app.include_router(profile_controller.profile_router)
 
 if __name__ == '__main__':
 

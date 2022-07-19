@@ -7,7 +7,7 @@ class AssetNotFound(APIException):
 
     @staticmethod
     def generate_base_message(asset: str, identifier_name: str, identifier: str) -> str:
-        return f"The {asset} indentified by {identifier_name}: {identifier} could not be found."
+        return f"The {asset} identified by {identifier_name}: {identifier} could not be found."
 
 
 class UserNotFound(AssetNotFound):
@@ -17,4 +17,4 @@ class UserNotFound(AssetNotFound):
 
     @staticmethod
     def generate_message(identifier: str) -> str:
-        return AssetNotFound.generate_base_message("user", "id", identifier)
+        return AssetNotFound.generate_base_message("user", "username", identifier)

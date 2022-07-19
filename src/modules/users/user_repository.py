@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional, Any
-
-from typing_extensions import Coroutine
+from typing import Optional
 
 from src.modules.users.entities.user_entity import User
 from src.modules.users.dto.user_dto import UserUpdate

@@ -16,7 +16,6 @@ class User(settings.settings_factory().DBBaseModel):
     image = Column(String)
 
     password = relationship("Password", back_populates="user")
-    followers = relationship("FollowRelation", back_populates="user")
 
     def is_password_valid(self, salted_hash: str) -> bool:
         salt, hashed_password = self.salted_hash.split(" ")

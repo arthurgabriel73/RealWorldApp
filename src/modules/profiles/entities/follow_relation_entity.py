@@ -7,7 +7,6 @@ from src.config import settings
 class FollowRelation(settings.settings_factory().DBBaseModel):
     __tablename__ = "FOLLOW_RELATION"
 
-    user_id = Column("USER", String, ForeignKey("USERS.UUID"), primary_key=True)
-    follower_id = Column("FOLLOWER", String, ForeignKey("USERS.UUID"), primary_key=True)
+    user_id = Column("USER", String, primary_key=True)
+    follower_id = Column("FOLLOWER", String)
 
-    user = relationship("User", back_populates="followers")

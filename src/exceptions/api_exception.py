@@ -1,6 +1,6 @@
 from abc import ABC
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException
 
 
 class APIException(HTTPException, ABC):

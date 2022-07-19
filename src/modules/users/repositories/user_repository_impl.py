@@ -1,17 +1,15 @@
 from functools import lru_cache
-from typing import Optional, Any
+from typing import Optional
 
 from fastapi import Depends
 import sqlalchemy.exc
 
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
-from typing_extensions import Coroutine
 
 from src.config.database_conn import db_engine_factory
 from src.config.database_conn import get_session
-from src.exceptions.already_exists import UserAlreadyExists
-from src.exceptions.database_exception import IntegrityError
+from src.exceptions.database_exception import IntegrityError, NoResultFound
 
 from src.modules.users.entities.user_entity import User
 from src.modules.users.user_repository import UserRepository
@@ -35,10 +33,13 @@ class UserRepositoryImpl(UserRepository):
 
     async def find_user_by_username(self, username: str) -> Optional[User]:
         async with AsyncSession(self.__engine) as session:
-            query = select(User).where(User.username == username)
-            result = await session.execute(query)
-
-        return result.scalars().unique().one_or_none()
+            try:
+                query = select(User).where(User.username == username)
+                result = await session.execute(query)
+                user: User = result.scalars().unique()
+                return user
+            except sqlalchemy.exc.NoResultFound:
+                raise NoResultFound()
 
     async def add_user(self, username: str, salted_hash: str) -> str:
         try:

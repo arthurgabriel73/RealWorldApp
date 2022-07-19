@@ -1,8 +1,7 @@
 from functools import lru_cache
-from typing import Optional, Any
+from typing import Optional
 
 from fastapi import Depends
-from typing_extensions import Coroutine
 
 from src.exceptions.already_exists import UserAlreadyExists
 from src.exceptions.database_exception import IntegrityError

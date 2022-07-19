@@ -1,11 +1,11 @@
-from pydantic import BaseModel, EmailStr, validator
+from pydantic import BaseModel
 
 
 class ProfileDTO(BaseModel):
     username: str
-    bio: str
-    image: str
-    following: bool | list[str]
+    bio: str | None
+    image: str | None
+    followers: bool | list[str]
 
     class Config:
         orm_mode = True
