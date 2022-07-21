@@ -16,7 +16,14 @@ class User(settings.settings_factory().DBBaseModel):
     image = Column(String)
 
     password = relationship("Password", back_populates="user")
+    followed = relationship("FollowRelation",
+                            primaryjoin="and_(User.id==FollowRelation.user_id,"
+                                        "FollowRelation.user_id==User.id)")
+    follower = relationship("FollowRelation",
+                            primaryjoin="and_(User.id==FollowRelation.follower_id,"
+                                        "FollowRelation.follower_id==User.id)")
 
-    def is_password_valid(self, salted_hash: str) -> bool:
-        salt, hashed_password = self.salted_hash.split(" ")
-        return verify_password(salted_hash, salt, hashed_password)
+
+def is_password_valid(self, salted_hash: str) -> bool:
+    salt, hashed_password = self.salted_hash.split(" ")
+    return verify_password(salted_hash, salt, hashed_password)
