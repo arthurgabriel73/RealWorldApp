@@ -54,7 +54,7 @@ class UserRepositoryImpl(UserRepository):
         except sqlalchemy.exc.IntegrityError:
             raise IntegrityError()
 
-    async def update_user(self, user_id: int, user: UserUpdate) -> UserUpdate:
+    async def update_user(self, user_id: str, user: UserUpdate) -> UserUpdate:
         try:
             async with AsyncSession(self.__engine) as session:
                 query = select(User).filter(User.id == user_id)

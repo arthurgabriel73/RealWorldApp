@@ -22,6 +22,6 @@ async def get_user(
 
 
 @user_router.put("/{user_id}", response_model=UserComplete)
-async def update_user(user_id: int, user: UserUpdate, user_service: UserService = Depends(user_service_factory)
+async def update_user(user_id: str, user: UserUpdate, user_service: UserService = Depends(user_service_factory)
                       ) -> UserComplete:
     return await user_service.update_user(user_id, user)

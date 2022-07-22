@@ -38,7 +38,7 @@ class UserService:
         except IntegrityError:
             raise UserAlreadyExists(username)
 
-    async def update_user(self, user_id: int, user: UserUpdate) -> UserComplete:
+    async def update_user(self, user_id: str, user: UserUpdate) -> UserComplete:
         user = await self.__user_repo.update_user(user_id, user)
         return user
 

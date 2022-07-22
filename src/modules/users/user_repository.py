@@ -15,7 +15,7 @@ class UserRepository(ABC):
         ...
 
     @abstractmethod
-    def update_user(self, user_id: int, user: UserUpdate) -> Optional[User]:
+    def update_user(self, user_id: str, user: UserUpdate) -> Optional[User]:
         ...
 
     @abstractmethod

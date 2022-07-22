@@ -11,10 +11,10 @@ class AssetNotFound(APIException):
 
 
 class UserNotFound(AssetNotFound):
-    def __int__(self, identifier: str):
+    def __init__(self, identifier: str) -> None:
         message = self.generate_message(identifier)
         super().__init__(message)
 
     @staticmethod
     def generate_message(identifier: str) -> str:
-        return AssetNotFound.generate_base_message("user", "username", identifier)
+        return AssetNotFound.generate_base_message("user", "id", identifier)
