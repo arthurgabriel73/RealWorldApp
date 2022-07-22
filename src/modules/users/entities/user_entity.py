@@ -22,8 +22,3 @@ class User(settings.settings_factory().DBBaseModel):
     follower = relationship("FollowRelation",
                             primaryjoin="and_(User.id==FollowRelation.follower_id,"
                                         "FollowRelation.follower_id==User.id)")
-
-
-def is_password_valid(self, salted_hash: str) -> bool:
-    salt, hashed_password = self.salted_hash.split(" ")
-    return verify_password(salted_hash, salt, hashed_password)

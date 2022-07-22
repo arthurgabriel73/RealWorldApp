@@ -24,6 +24,10 @@ class UserComplete(UserDTO):
     bio: str | None
 
 
+class UserLogin(UserDTO):
+    password: str
+
+
 class IncomingUserDTO(UserDTO):
     password: str
 

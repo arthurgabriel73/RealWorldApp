@@ -9,7 +9,9 @@ from src.modules.auth.dto.token_dto import Token
 from src.config.settings import Settings, settings_factory
 from src.exceptions.auth import CouldNotValidate, InvalidPassword, TokenHasExpired
 from src.exceptions.not_found import UserNotFound
-from src.modules.users.dto.user_dto import IncomingUserDTO, UserComplete
+from src.modules.auth.entities.password_entity import Password
+from src.modules.users.dto.user_dto import IncomingUserDTO, UserComplete, UserLogin
+from src.modules.users.entities.user_entity import User
 from src.modules.users.password_repository import PasswordRepository
 from src.modules.users.repositories.password_repository_impl import password_repository_impl_factory
 from src.modules.users.services.user_service import UserService, user_service_factory
@@ -31,18 +33,19 @@ class AuthService:
         except IntegrityError:
             UserAlreadyExists(user.username)
 
-    async def authenticate_user(self, user: IncomingUserDTO) -> str:
-        stored_user = await self.__user_service.find_user_by_username(user.username)
+    async def authenticate_user(self, user: UserLogin) -> str:
+        stored_user: User = await self.__user_service.find_user_by_username(user.username)
         if stored_user is None:
             raise UserNotFound(user.username)
+        password: Password = await self.__password_repository.get_password(stored_user.password_id)
 
-        is_valid = stored_user.is_password_valid(user.password)
+        is_valid = password.is_password_valid(user.password)
 
         if not is_valid:
             raise InvalidPassword()
         return user.username
 
-    def create_access_token(self, username: str) -> Token:
+    async def create_access_token(self, username: str) -> Token:
         data_to_encode = {"sub": username, "exp": self.__settings.get_expiration_date()}
         token = jwt.encode(data_to_encode, self.__settings.TOKEN_SECRET)
         return Token(access_token=token)

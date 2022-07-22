@@ -31,12 +31,12 @@ class UserRepositoryImpl(UserRepository):
 # statement = select(User).where(User.id == user_id)
 # return session.scalars(statement).one_or_none() > AttributeError: 'coroutine' object has no attribute 'one_or_none'
 
-    async def find_user_by_username(self, username: str) -> Optional[User]:
+    async def find_user_by_username(self, username: str) -> User:
         async with AsyncSession(self.__engine) as session:
             try:
                 query = select(User).where(User.username == username)
                 result = await session.execute(query)
-                user: User = result.scalars().unique()
+                user: User = result.scalars().unique().one_or_none()
                 return user
             except sqlalchemy.exc.NoResultFound:
                 raise NoResultFound()

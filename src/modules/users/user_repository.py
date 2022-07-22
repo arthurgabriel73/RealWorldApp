@@ -19,5 +19,5 @@ class UserRepository(ABC):
         ...
 
     @abstractmethod
-    def find_user_by_username(self, username: str) -> Optional[User]:
+    def find_user_by_username(self, username: str) -> User:
         ...

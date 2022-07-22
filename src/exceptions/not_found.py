@@ -2,8 +2,8 @@ from src.exceptions.api_exception import APIException
 
 
 class AssetNotFound(APIException):
-    def __init__(self, message: str) -> None:
-        super().__init__(message, 404)
+    def __init__(self, message: str):
+        super().__init__(404, message)
 
     @staticmethod
     def generate_base_message(asset: str, identifier_name: str, identifier: str) -> str:
@@ -11,7 +11,7 @@ class AssetNotFound(APIException):
 
 
 class UserNotFound(AssetNotFound):
-    def __int__(self, identifier: str) -> None:
+    def __int__(self, identifier: str):
         message = self.generate_message(identifier)
         super().__init__(message)
 
