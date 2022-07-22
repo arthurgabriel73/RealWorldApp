@@ -22,7 +22,8 @@ class ProfileService:
         try:
             user = await self.__user_repo.find_user_by_username(username)
             followers = await self.__profile_repo.get_followers(username)
-            if followers is None: followers = False
+            if followers is None:
+                followers = False
 
             profile: ProfileDTO = ProfileDTO(
                 username=username,

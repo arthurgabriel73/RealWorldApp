@@ -14,15 +14,17 @@ class ProfileRepositoryImpl(ProfileRepository):
     def __init__(self, engine: AsyncEngine = Depends(get_session)):
         self.__engine = engine
 
-    async def get_followers(self, username: str) -> list:
+    async def get_followers(self, username: str):
         async with AsyncSession(self.__engine) as session:
-            get_uuid: str = select(User.id).where(User.username == username)
-            uuid = await session.execute(get_uuid)
+            get_uuid = select(User.id).where(User.username == username)
+            result = await session.execute(get_uuid)
+            uuid = result.scalars().one_or_none()
 
             query = select(FollowRelation.follower_id).where(FollowRelation.user_id == uuid)
-            result: list[str] = await session.execute(query)
+            result = await session.execute(query)  # """PROBLEM"""
+            followers = result.scalars().unique().all()
 
-            return result
+            return followers
 
 
 @lru_cache
