@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class FollowRelationDTO(BaseModel):
     username: str
-    user_to_follow: str
+    follower: str
 
     class Config:
         orm_mode = True

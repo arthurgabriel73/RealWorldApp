@@ -17,8 +17,8 @@ class User(settings.settings_factory().DBBaseModel):
 
     password = relationship("Password", back_populates="user")
     followed = relationship("FollowRelation",
-                            primaryjoin="and_(User.id==FollowRelation.user_id,"
-                                        "FollowRelation.user_id==User.id)")
+                            primaryjoin="and_(User.username==FollowRelation.username,"
+                                        "FollowRelation.username==User.username)")
     follower = relationship("FollowRelation",
-                            primaryjoin="and_(User.id==FollowRelation.follower_id,"
-                                        "FollowRelation.follower_id==User.id)")
+                            primaryjoin="and_(User.username==FollowRelation.follower,"
+                                        "FollowRelation.follower==User.username)")

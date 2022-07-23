@@ -27,9 +27,18 @@ async def get_profile(
     return await profile_service.get_profile(username)
 
 
-@profile_router.post("/{username}/follow")
-async def follow_user(
+@profile_router.post("/{username}/follow", response_model=FollowRelationDTO)
+async def follow_profile(
         username: str, profile_service: ProfileService = Depends(profile_service_factory),
         logged_user: User = Depends(get_user_from_token)
 ) -> FollowRelationDTO:
-    return await profile_service.follow_user(username, logged_user)
+    return await profile_service.follow_username(username, logged_user)
+
+
+@profile_router.delete("/{username}/unfollow", response_model=FollowRelationDTO)
+async def unfollow_profile(
+        username: str, profile_service: ProfileService = Depends(profile_service_factory),
+        logged_user: User = Depends(get_user_from_token)
+) -> FollowRelationDTO:
+    return await profile_service.unfollow_username(username, logged_user)
+

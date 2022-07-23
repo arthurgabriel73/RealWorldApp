@@ -25,7 +25,7 @@ async def get_user_from_token(
     return await auth_service.retrieve_user_from_token(token)
 
 
-@auth_router.post("/singup")
+@auth_router.post("/signup")
 async def sign_up(
         user: IncomingUserDTO = Body(),
         auth_service: AuthService = Depends(auth_service_factory)

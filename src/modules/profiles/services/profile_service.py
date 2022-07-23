@@ -32,20 +32,30 @@ class ProfileService:
                 bio=user.bio,
                 image=user.image,
                 followers=followers
-
             )
             return profile
 
         except NoResultFound:
             raise UserNotFound(username)
 
-    async def follow_user(self, username: str, logged_user: User) -> FollowRelationDTO:
+    async def follow_username(self, username: str, logged_user: User) -> FollowRelationDTO:
         try:
             user = await self.__user_repo.find_user_by_username(username)
             username = user.username
-            follow_relation = await self.__profile_repo.follow_user(username, logged_user)
+            follow_relation = await self.__profile_repo.follow_username(username, logged_user)
 
             return follow_relation
+
+        except NoResultFound:
+            raise UserNotFound(username)
+
+    async def unfollow_username(self, username: str, logged_user: User) -> FollowRelationDTO:
+        try:
+            user = await self.__user_repo.find_user_by_username(username)
+            username = user.username
+            unfollow_relation = await self.__profile_repo.unfollow_username(username, logged_user)
+
+            return unfollow_relation
 
         except NoResultFound:
             raise UserNotFound(username)
