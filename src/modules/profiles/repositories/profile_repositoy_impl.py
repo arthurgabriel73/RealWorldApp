@@ -41,6 +41,9 @@ class ProfileRepositoryImpl(ProfileRepository):
                 user_id=uuid_user_to_follow,
                 follower_id=uuid_current
             )
+            session.add(follow_relation)
+            await session.commit()
+            await session.refresh(follow_relation)
 
             return follow_relation
 
