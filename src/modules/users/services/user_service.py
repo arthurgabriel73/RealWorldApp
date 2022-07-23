@@ -4,6 +4,7 @@ from typing import Optional
 from fastapi import Depends
 
 from src.exceptions.already_exists import UserAlreadyExists
+from src.exceptions.conflict import ConflictOnUpdate
 from src.exceptions.database_exception import IntegrityError
 from src.exceptions.not_found import UserNotFound
 from src.modules.users.entities.user_entity import User
@@ -39,8 +40,11 @@ class UserService:
             raise UserAlreadyExists(username)
 
     async def update_user(self, user_id: str, user: UserUpdate) -> UserComplete:
-        user = await self.__user_repo.update_user(user_id, user)
-        return user
+        try:
+            user = await self.__user_repo.update_user(user_id, user)
+            return user
+        except IntegrityError:
+            raise ConflictOnUpdate(user_id)
 
 
 @lru_cache()

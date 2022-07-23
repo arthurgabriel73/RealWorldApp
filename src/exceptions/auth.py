@@ -3,7 +3,7 @@ from src.exceptions.api_exception import APIException
 
 class Unauthorized(APIException):
     def __init__(self, message: str) -> None:
-        super().__init__(message, 401)
+        super().__init__(401, message)
 
 
 class InvalidPassword(Unauthorized):

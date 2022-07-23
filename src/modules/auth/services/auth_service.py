@@ -50,7 +50,7 @@ class AuthService:
         token = jwt.encode(data_to_encode, self.__settings.TOKEN_SECRET)
         return Token(access_token=token)
 
-    async def retrieve_user_from_token(self, token: str) -> UserComplete:
+    async def retrieve_user_from_token(self, token: str) -> User:
         try:
             data = jwt.decode(token, self.__settings.TOKEN_SECRET, algorithms=["HS256"])
             stored_user = await self.__user_service.find_user_by_username(data.get("sub"))
