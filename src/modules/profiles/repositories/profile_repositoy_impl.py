@@ -21,10 +21,28 @@ class ProfileRepositoryImpl(ProfileRepository):
             uuid = result.scalars().one_or_none()
 
             query = select(FollowRelation.follower_id).where(FollowRelation.user_id == uuid)
-            result = await session.execute(query)  # """PROBLEM"""
+            result = await session.execute(query)
             followers = result.scalars().unique().all()
 
             return followers
+
+    async def follow_user(self, username, logged_user) -> FollowRelation:
+        async with AsyncSession(self.__engine) as session:
+
+            get_current_uuid = select(User.id).where(User.username == logged_user.username)
+            result = await session.execute(get_current_uuid)
+            uuid_current = result.scalars().one_or_none()
+
+            get_uuid_user_to_follow = select(User.id).where(User.username == username)
+            result = await session.execute(get_uuid_user_to_follow)
+            uuid_user_to_follow = result.scalars().one_or_none()
+
+            follow_relation: FollowRelation = FollowRelation(
+                user_id=uuid_user_to_follow,
+                follower_id=uuid_current
+            )
+
+            return follow_relation
 
 
 @lru_cache

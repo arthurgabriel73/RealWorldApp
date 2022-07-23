@@ -1,10 +1,15 @@
-from fastapi import APIRouter, Depends
+from functools import lru_cache
 
-from src.config.database_conn import get_session
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncEngine
+
+from src.config.database_conn import get_session, db_engine_factory
+from src.config.database_conn import get_current_user
+from src.modules.profiles.dto.follow_dto import FollowRelationDTO
 from src.modules.profiles.dto.profile_dto import ProfileDTO
 from src.modules.profiles.services.profile_service import profile_service_factory, ProfileService
 
-from src.modules.users.dto.user_dto import UserDTO, UserComplete, UserUpdate
+from src.modules.users.entities.user_entity import User
 
 PROFILES_URL = '/profiles'
 
@@ -20,3 +25,11 @@ async def get_profile(
         username: str, profile_service: ProfileService = Depends(profile_service_factory)
 ) -> ProfileDTO | str:
     return await profile_service.get_profile(username)
+
+
+@profile_router.post("/{username}/follow")
+async def follow_user(
+        username: str, profile_service: ProfileService = Depends(profile_service_factory),
+        logged_user: User = Depends(get_current_user)
+) -> FollowRelationDTO:
+    return await profile_service.follow_user(username, logged_user)
