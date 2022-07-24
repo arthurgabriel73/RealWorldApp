@@ -5,7 +5,7 @@ class ProfileDTO(BaseModel):
     username: str
     bio: str | None
     image: str | None
-    followers: bool | list[str]
+    followers: list[str]
 
     class Config:
         orm_mode = True

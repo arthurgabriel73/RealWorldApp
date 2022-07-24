@@ -3,7 +3,7 @@ from functools import lru_cache
 from fastapi import Depends
 
 from src.config.settings import settings_factory, Settings
-from src.exceptions.database_exception import NoResultFound
+from src.exceptions.database_exception import IntegrityError
 from src.exceptions.not_found import UserNotFound
 from src.modules.profiles.dto.follow_dto import FollowRelationDTO
 from src.modules.profiles.dto.profile_dto import ProfileDTO
@@ -21,44 +21,44 @@ class ProfileService:
         self.__settings = settings
 
     async def get_profile(self, username: str) -> ProfileDTO:
-        try:
-            user = await self.__user_repo.find_user_by_username(username)
-            followers = await self.__profile_repo.get_followers(username)
-            if followers is None:
-                followers = False
+        user = await self.__user_repo.find_user_by_username(username)
+        followers = await self.__profile_repo.get_followers(username)
 
+        if followers is None:
+            followers = False
+        if user is None:
+            raise UserNotFound(username)
+        else:
             profile: ProfileDTO = ProfileDTO(
                 username=username,
                 bio=user.bio,
                 image=user.image,
                 followers=followers
             )
+
             return profile
 
-        except NoResultFound:
-            raise UserNotFound(username)
-
     async def follow_username(self, username: str, logged_user: User) -> FollowRelationDTO:
-        try:
-            user = await self.__user_repo.find_user_by_username(username)
-            username = user.username
-            follow_relation = await self.__profile_repo.follow_username(username, logged_user)
+        user = await self.__user_repo.find_user_by_username(username)
 
-            return follow_relation
-
-        except NoResultFound:
+        if user is None:
             raise UserNotFound(username)
+
+        username = user.username
+        follow_relation = await self.__profile_repo.follow_username(username, logged_user)
+
+        return follow_relation
 
     async def unfollow_username(self, username: str, logged_user: User) -> FollowRelationDTO:
-        try:
-            user = await self.__user_repo.find_user_by_username(username)
-            username = user.username
-            unfollow_relation = await self.__profile_repo.unfollow_username(username, logged_user)
+        user = await self.__user_repo.find_user_by_username(username)
 
-            return unfollow_relation
-
-        except NoResultFound:
+        if user is None:
             raise UserNotFound(username)
+
+        username = user.username
+        unfollow_relation = await self.__profile_repo.unfollow_username(username, logged_user)
+
+        return unfollow_relation
 
 
 @lru_cache

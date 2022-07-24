@@ -28,7 +28,10 @@ class UserService:
         return user
 
     async def find_user_by_username(self, username: str) -> User:
-        return await self.__user_repo.find_user_by_username(username)
+        user = await self.__user_repo.find_user_by_username(username)
+        if user is None:
+            raise UserNotFound(username)
+        return user
 
     async def add_user(self, username: str, salted_hash: str) -> str:
         try:

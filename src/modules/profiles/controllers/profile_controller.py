@@ -1,9 +1,6 @@
-from functools import lru_cache
-
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncEngine
 
-from src.config.database_conn import get_session, db_engine_factory
+from src.config.database_conn import get_session
 from src.modules.auth.controllers.auth_controller import get_user_from_token
 from src.modules.profiles.dto.follow_dto import FollowRelationDTO
 from src.modules.profiles.dto.profile_dto import ProfileDTO

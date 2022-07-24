@@ -18,3 +18,9 @@ class UserNotFound(AssetNotFound):
     @staticmethod
     def generate_message(identifier: str) -> str:
         return AssetNotFound.generate_base_message("user", "id", identifier)
+
+
+class FollowRelationNotFound(AssetNotFound):
+    def __init__(self) -> None:
+        message = "The follow relation was not found."
+        super().__init__(message)

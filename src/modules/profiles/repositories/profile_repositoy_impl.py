@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+import sqlalchemy.exc
 from fastapi import Depends, status
 from fastapi.openapi.models import Response
 from sqlalchemy import select, desc
@@ -10,7 +11,6 @@ from src.config.database_conn import db_engine_factory, get_session
 from src.modules.profiles.dto.follow_dto import FollowRelationDTO
 from src.modules.profiles.entities.follow_relation_entity import FollowRelation
 from src.modules.profiles.profile_repository import ProfileRepository
-from src.modules.users.entities.user_entity import User
 
 
 class ProfileRepositoryImpl(ProfileRepository):
@@ -27,29 +27,35 @@ class ProfileRepositoryImpl(ProfileRepository):
 
     async def follow_username(self, username, logged_user) -> FollowRelationDTO:
         async with AsyncSession(self.__engine) as session:
-            follow_relation: FollowRelation = FollowRelation(
-                username=username,
-                follower=logged_user.username
-            )
+            query = select(FollowRelation).where(FollowRelation.username == username)\
+                .filter(FollowRelation.follower == logged_user.username)
+            result = await session.execute(query)
+            relation_exists = result.scalars().one_or_none()
 
-            session.add(follow_relation)
-            await session.commit()
-            await session.refresh(follow_relation)
+            if relation_exists is None:
+                follow_relation: FollowRelation = FollowRelation(
+                    username=username,
+                    follower=logged_user.username
+                )
 
-            return follow_relation
+                session.add(follow_relation)
+                await session.commit()
+                await session.refresh(follow_relation)
+
+                return follow_relation
 
     async def unfollow_username(self, username, logged_user) -> FollowRelationDTO:
         async with AsyncSession(self.__engine) as session:
             query = select(FollowRelation).where(FollowRelation.username == username)\
                 .filter(FollowRelation.follower == logged_user.username)
-
             result = await session.execute(query)
             follow_relation = result.scalars().unique().one_or_none()
 
-            await session.delete(follow_relation)
-            await session.commit()
+            if follow_relation is not None:
+                await session.delete(follow_relation)
+                await session.commit()
 
-            return follow_relation
+                return follow_relation
 
 
 @lru_cache
