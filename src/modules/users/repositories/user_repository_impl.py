@@ -70,6 +70,9 @@ class UserRepositoryImpl(UserRepository):
 
                     await session.commit()
 
+                if user_update is None:
+                    raise NoResultFound()
+
         except sqlalchemy.exc.IntegrityError:
             raise IntegrityError()
 

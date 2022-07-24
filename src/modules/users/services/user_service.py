@@ -1,11 +1,10 @@
 from functools import lru_cache
-from typing import Optional
 
 from fastapi import Depends
 
 from src.exceptions.already_exists import UserAlreadyExists
 from src.exceptions.conflict import ConflictOnUpdate
-from src.exceptions.database_exception import IntegrityError
+from src.exceptions.database_exception import IntegrityError, NoResultFound
 from src.exceptions.not_found import UserNotFound
 from src.modules.users.entities.user_entity import User
 from src.modules.users.password_repository import PasswordRepository
@@ -45,6 +44,9 @@ class UserService:
             return user
         except IntegrityError:
             raise ConflictOnUpdate(user_id)
+
+        except NoResultFound:
+            raise UserNotFound(user_id)
 
 
 @lru_cache()
