@@ -33,7 +33,7 @@ class UserService:
             raise UserNotFound(username)
         return user
 
-    async def add_user(self, username: str, salted_hash: str) -> str:
+    async def add_user(self, username: str, salted_hash: str) -> User:
         try:
             new_user = await self.__user_repo.add_user(username, salted_hash)
             return new_user

@@ -27,8 +27,9 @@ class AuthService:
     async def save_user_in_repository(self, user: IncomingUserDTO):
         salted_hash = user.get_salted_hash()
         try:
-            await self.__user_service.add_user(user.username, salted_hash)
-            return await self.__password_repository.add_password(user.username, salted_hash)
+            user = await self.__user_service.add_user(user.username, salted_hash)
+            await self.__password_repository.add_password(user.username, salted_hash)
+            return user
 
         except IntegrityError:
             UserAlreadyExists(user.username)

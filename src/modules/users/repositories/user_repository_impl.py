@@ -37,7 +37,7 @@ class UserRepositoryImpl(UserRepository):
             user: User = result.scalars().unique().one_or_none()
             return user
 
-    async def add_user(self, username: str, salted_hash: str) -> str:
+    async def add_user(self, username: str, salted_hash: str) -> User:
         try:
             async with AsyncSession(self.__engine) as session:
                 user = User(id=generate_uuid(), username=username)
@@ -45,7 +45,7 @@ class UserRepositoryImpl(UserRepository):
                 await session.commit()
                 await session.refresh(user)
 
-            return username
+            return user
 
         except sqlalchemy.exc.IntegrityError:
             raise IntegrityError()

@@ -18,6 +18,7 @@ class UserUpdate(UserDTO):
 
 
 class UserComplete(UserDTO):
+    id: str
     username: str | None
     email: EmailStr | None
     image: str | None

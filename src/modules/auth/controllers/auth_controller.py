@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from src.modules.auth.dto.token_dto import Token
 from src.modules.auth.services.auth_service import auth_service_factory
-from src.modules.users.dto.user_dto import IncomingUserDTO, UserDTO, UserLogin
+from src.modules.users.dto.user_dto import IncomingUserDTO, UserDTO, UserLogin, UserComplete
 from src.modules.auth.services.auth_service import AuthService
 from src.modules.users.entities.user_entity import User
 
@@ -25,7 +25,7 @@ async def get_user_from_token(
     return await auth_service.retrieve_user_from_token(token)
 
 
-@auth_router.post("/signup")
+@auth_router.post("/signup", response_model=UserComplete)
 async def sign_up(
         user: IncomingUserDTO = Body(),
         auth_service: AuthService = Depends(auth_service_factory)
