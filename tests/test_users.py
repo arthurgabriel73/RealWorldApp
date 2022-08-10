@@ -12,7 +12,7 @@ client = TestClient(app)
 # ----- Get User -----
 def test_returns_user_when_existing_id_is_given():
     # Arrange
-    uuid = "a3b27361-2005-4578-9fbd-dc8cf71363b3"
+    uuid = "30e30b31-fa93-487f-b000-edaaa69f050f"
 
     # Act
     response = client.get(f"/users/{uuid}")
@@ -39,9 +39,9 @@ def test_raises_not_found_exception_when_a_not_existing_id_is_given():
 # ----- Update User -----
 def test_returns_updated_user_when_existing_id_is_given():
     # Arrange
-    uuid = "ee23c50a-7695-417c-a79f-e6934f34b44e"
+    uuid = "01ad956f-cb73-424e-bb33-a38736486488"
     user_update = {
-        "username": "arthur_update",
+        "username": "user_update",
         "bio": fake.pystr()
     }
 
@@ -58,7 +58,7 @@ def test_raises_not_found_exception_when_a_not_existing_id_is_given_to_update():
     # Arrange
     false_uuid = "2"
     fake_user = {
-        "username": "arthur_update",
+        "username": "user_update",
     }
 
     # Act

@@ -42,7 +42,7 @@ def token():
 # ----- GET Profile -----
 def test_returns_a_profile_when_existing_username_is_given():
     # Arrange
-    username = "arthur"
+    username = "user"
 
     # Act
     response = client.get(f"/profiles/{username}")

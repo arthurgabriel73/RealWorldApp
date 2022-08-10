@@ -4,7 +4,7 @@ from fastapi import Depends
 
 from src.config.settings import settings_factory, Settings
 from src.exceptions.database_exception import IntegrityError
-from src.exceptions.not_found import UserNotFound
+from src.exceptions.not_found import UserNotFound, FollowRelationNotFound
 from src.modules.profiles.dto.follow_dto import FollowRelationDTO
 from src.modules.profiles.dto.profile_dto import ProfileDTO
 from src.modules.profiles.profile_repository import ProfileRepository
@@ -54,11 +54,15 @@ class ProfileService:
 
         if user is None:
             raise UserNotFound(username)
+        try:
 
-        username = user.username
-        unfollow_relation = await self.__profile_repo.unfollow_username(username, logged_user)
+            username = user.username
+            unfollow_relation = await self.__profile_repo.unfollow_username(username, logged_user)
 
-        return unfollow_relation
+            return unfollow_relation
+
+        except FollowRelationNotFound:
+            raise FollowRelationNotFound()
 
 
 @lru_cache

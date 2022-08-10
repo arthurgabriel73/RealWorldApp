@@ -41,9 +41,9 @@ def test_raise_invalid_password_when_an_invalid_password_is_given():
 
 
 # ----- Login -----
-def test_returns_the_user_username_when_valid_credentials_are_given():
+def test_returns_token_when_valid_credentials_are_given():
     # Arrange
-    request_body = {"username": "arthur", "password": "Arthur123$"}
+    request_body = {"username": "user", "password": "User123$"}
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 
     # Act
@@ -57,7 +57,7 @@ def test_returns_the_user_username_when_valid_credentials_are_given():
 
 def test_raise_invalid_password_when_wrong_password_is_given():
     # Arrange
-    request_body = {"username": "arthur", "password": "invalidpassword"}
+    request_body = {"username": "user", "password": "invalidpassword"}
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 
     # Act
