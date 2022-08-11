@@ -1,3 +1,5 @@
+from typing import Union
+
 import uvicorn
 
 from fastapi import FastAPI
@@ -10,6 +12,7 @@ app = FastAPI(
     title='Real World App - API',
     description='This project is made to learn how to create a complete API using FastAPI and SQLAlchemy ORM'
 )
+
 
 app.include_router(auth_controller.auth_router)
 app.include_router(user_controller.user_router)

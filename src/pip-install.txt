@@ -1,1 +1,6 @@
 pip install fastapi psycopg2-binary sqlalchemy asyncpg uvicorn python-jose[cryptography] pytz passlib python-multipart pydantic[email] bcrypt
+- anyio
+    - pytest-asyncio
+    - pytest-tornasync
+    - pytest-trio
+    - pytest-twisted

@@ -5,7 +5,7 @@ from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 
-from exceptions.not_found import FollowRelationNotFound
+from src.exceptions.not_found import FollowRelationNotFound
 from src.config.database_conn import db_engine_factory, get_session
 from src.modules.profiles.dto.follow_dto import FollowRelationDTO
 from src.modules.profiles.entities.follow_relation_entity import FollowRelation

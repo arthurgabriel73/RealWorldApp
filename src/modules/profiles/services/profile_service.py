@@ -53,9 +53,8 @@ class ProfileService:
         user = await self.__user_repo.find_user_by_username(username)
 
         if user is None:
-            raise UserNotFound(username)
+            raise FollowRelationNotFound()
         try:
-
             username = user.username
             unfollow_relation = await self.__profile_repo.unfollow_username(username, logged_user)
 
