@@ -4,18 +4,22 @@ from tests.acceptance.drivers.client import client_factory
 
 
 class AuthDriver:
-    __ADMIN = {"username": "user", "password": "User123$"}
+    __LOGGED_USER = {"username": "user", "password": "User123$"}
     __TOKEN_URL = AUTH_URL + "/login"
 
     def __init__(self):
-        self.__test_client: AsyncClient = await client_factory()
+        self.__test_client = None
+
+    async def create_test_client(self):
+        self.__test_client = await client_factory()
 
     @staticmethod
     def _generate_auth_header(token: str) -> dict:
         return {"Authorization": f"Bearer {token}"}
 
-    def get_admin_token(self) -> str:
-        token = await self.__test_client.post(self.__TOKEN_URL, data=self.__ADMIN)
+    async def get_token(self) -> str:
+        await self.create_test_client()
+        token = await self.__test_client.post(self.__TOKEN_URL, data=self.__LOGGED_USER)
         token = token.json().get("access_token")
 
         return token

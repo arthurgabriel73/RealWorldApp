@@ -1,5 +1,3 @@
-import asyncio
-
 import pytest
 from httpx import AsyncClient
 from faker import Faker
@@ -11,7 +9,7 @@ fake = Faker()
 
 # ----- SignUp -----
 @pytest.mark.anyio
-async def test_create_an_user_when_a_valid_username_and_password_is_given():
+async def test_creates_an_user_when_a_valid_username_and_password_is_given():
     async with AsyncClient(app=app, base_url="http://localhost:8000") as client:
         # Arrange
         username = fake.pystr()

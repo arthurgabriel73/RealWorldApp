@@ -1,16 +1,12 @@
 from functools import lru_cache
 from typing import Generator
 
-from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
 from pydantic import BaseModel
-from sqlalchemy.future import select
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
 
-from src.config.settings import settings_factory, settings
-from src.modules.users.entities.user_entity import User
+from src.config.settings import settings_factory
 
 __engine: AsyncEngine = create_async_engine(settings_factory().DB_URL)
 
