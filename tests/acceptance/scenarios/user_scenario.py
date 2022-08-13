@@ -25,12 +25,12 @@ async def test_should_get_user() -> None:
     await user_dsl.assert_response_is_user_01_data()
 
 
-def test_should_return_not_found_if_user_dont_exists():
+async def test_should_return_not_found_if_user_dont_exists():
     # Arrange
-    user_dsl.login_authorized()
+    await user_dsl.login_authorized()
 
     # Act
-    user_dsl.get_non_existent_user()
+    await user_dsl.get_non_existent_user()
 
     # Assert
-    user_dsl.assert_response_is_not_found()
+    await user_dsl.assert_response_is_not_found()

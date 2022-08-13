@@ -27,11 +27,11 @@ class UserDSL(AuthDSL):
             "bio": None
         }
 
-    def get_non_existent_user(self) -> None:
+    async def get_non_existent_user(self) -> None:
         self.__user_id = "NOT_A_USER"
-        self._response = self._driver.get_user(self.__user_id, self._token)
+        self._response = await self._driver.get_user(self.__user_id, self._token)
 
-    def assert_response_is_not_found(self) -> None:  # verification is necessary
+    async def assert_response_is_not_found(self):  # verification is necessary
         assert self._response == {
-            "error": UserNotFound.generate_message(self.__user_id)
+            "detail": UserNotFound.generate_message(self.__user_id)
         }
