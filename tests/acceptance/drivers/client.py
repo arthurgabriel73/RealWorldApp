@@ -4,5 +4,5 @@ from src.main import app
 
 
 @lru_cache()
-async def client_factory() -> AsyncClient:
+def client_factory() -> AsyncClient:
     return AsyncClient(app=app, base_url="http://localhost:8000")

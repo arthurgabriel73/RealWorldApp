@@ -10,7 +10,7 @@ class AuthDriver:
         self.__test_client = None
 
     async def create_test_client(self):
-        self.__test_client = await client_factory()
+        self.__test_client = client_factory()
 
     @staticmethod
     def _generate_auth_header(token: str) -> dict:
