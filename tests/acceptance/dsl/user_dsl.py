@@ -1,18 +1,20 @@
+from acceptance.drivers.user_driver import UserDriver
+from acceptance.dsl.auth_dsl import AuthDSL
 from src.exceptions.not_found import UserNotFound
-from tests.acceptance.drivers.user_driver import UserDriver
-from tests.acceptance.dsl.auth_dsl import AuthDSL
 
 from faker import Faker
 
 fake = Faker()
 
 
-class UserDSL(AuthDSL):
-    def __init__(self) -> None:
-        AuthDSL.__init__(self)
-        self.__bio = None
+class UserDSL:
+    def __init__(self):
         self._driver = UserDriver()
+        self._authDSL = AuthDSL()
         self.__user_id = ""
+        self._response = None
+        self._token = None
+        self.__bio = None
 
     def reset_data_cache(self):
         self._token = ""
@@ -25,7 +27,7 @@ class UserDSL(AuthDSL):
 
     async def get_user_01(self) -> None:
         self.__user_id = "30e30b31-fa93-487f-b000-edaaa69f050f"  # user
-        self._response = await self._driver.get_user(self.__user_id, self._token)
+        self._response = await self._driver.get_user(self.__user_id, self._token)  # CHANGE TO SERVICE
 
     async def assert_response_is_user_01_data(self):
         assert self._response == {
@@ -38,7 +40,7 @@ class UserDSL(AuthDSL):
 
     async def get_non_existent_user(self) -> None:
         self.__user_id = "NOT_A_USER"
-        self._response = await self._driver.get_user(self.__user_id, self._token)
+        self._response = await self._driver.get_user(self.__user_id, self._token)  # CHANGE TO SERVICE
 
     async def assert_response_is_not_found(self) -> None:
         assert self._response == {
@@ -51,7 +53,7 @@ class UserDSL(AuthDSL):
             "username": "user_update",
             "bio": fake.pystr(),
         }
-        self._response = await self._driver.update_user(uuid, self._token, user_json)
+        self._response = await self._driver.update_user(uuid, self._token, user_json)  # CHANGE TO SERVICE
         self.__bio = user_json["bio"]
 
     async def assert_response_is_updated_user(self):

@@ -1,12 +1,12 @@
+from acceptance.drivers.auth_driver import AuthDriver
 from src.exceptions.auth import CouldNotValidate
-from tests.acceptance.drivers.auth_driver import AuthDriver
 
 
 class AuthDSL:
     def __init__(self) -> None:
         self.__driver = AuthDriver()
         self._token = ""
-        self._response = {any: any}
+        self._response: {any: any} = {}
 
     def fake_token(self) -> None:
         self._token = "AFakeToken"

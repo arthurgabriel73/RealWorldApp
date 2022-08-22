@@ -1,10 +1,10 @@
 import pytest as pytest
 
-from acceptance.drivers.user_driver import UserDriver
-from tests.acceptance.dsl.user_dsl import UserDSL
-
+from acceptance.dsl.auth_dsl import AuthDSL
+from acceptance.dsl.user_dsl import UserDSL
 
 user_dsl = UserDSL()
+auth_dsl = AuthDSL()
 
 
 @pytest.fixture(autouse=True)
@@ -17,7 +17,7 @@ def run_around_tests():
 
 async def test_should_get_user() -> None:
     # Arrange
-    await user_dsl.login_authorized()
+    await auth_dsl.login_authorized()
 
     # Act
     await user_dsl.get_user_01()
@@ -28,7 +28,7 @@ async def test_should_get_user() -> None:
 
 async def test_should_return_not_found_if_user_doesnt_exists():
     # Arrange
-    await user_dsl.login_authorized()
+    await auth_dsl.login_authorized()
 
     # Act
     await user_dsl.get_non_existent_user()
@@ -39,7 +39,7 @@ async def test_should_return_not_found_if_user_doesnt_exists():
 
 async def test_should_return_updated_user_if_valid_user_is_given():
     # Arrange
-    await user_dsl.login_authorized()
+    await auth_dsl.login_authorized()
 
     # Act
     await user_dsl.update_valid_user()
