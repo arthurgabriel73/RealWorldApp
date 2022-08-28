@@ -35,7 +35,7 @@ class UserService:
 
     async def add_user(self, username: str, salted_hash: str) -> User:
         try:
-            new_user = await self.__user_repo.add_user(username, salted_hash)
+            new_user = await self.__user_repo.add_user(username)
             return new_user
 
         except IntegrityError:

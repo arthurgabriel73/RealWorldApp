@@ -13,7 +13,7 @@ class AuthDriver:
         self.__test_client = client_factory()
 
     @staticmethod
-    def _generate_auth_header(token: str) -> dict:
+    def generate_auth_header(token: str) -> dict:
         return {"Authorization": f"Bearer {token}"}
 
     async def get_token(self) -> str:

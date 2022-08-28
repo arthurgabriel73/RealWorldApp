@@ -37,7 +37,7 @@ class UserRepositoryImpl(UserRepository):
             user: User = result.scalars().unique().one_or_none()
             return user
 
-    async def add_user(self, username: str, salted_hash: str) -> User:
+    async def add_user(self, username: str) -> User:
         try:
             async with AsyncSession(self.__engine) as session:
                 user = User(id=generate_uuid(), username=username)

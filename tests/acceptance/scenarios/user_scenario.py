@@ -16,10 +16,7 @@ def run_around_tests():
 
 
 async def test_should_get_user() -> None:
-    # Arrange
-    await auth_dsl.login_authorized()
-
-    # Act
+    # Arrange & Act
     await user_dsl.get_user_01()
 
     # Assert
