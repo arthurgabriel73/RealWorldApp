@@ -12,3 +12,8 @@ class AssetAlreadyExists(APIException):
 class UserAlreadyExists(AssetAlreadyExists):
     def __init__(self, identifier: str):
         super().__init__("user", "username", identifier)
+
+
+class ArticleAlreadyExists(AssetAlreadyExists):
+    def __init__(self, identifier: str):
+        super().__init__("article", "title", identifier)

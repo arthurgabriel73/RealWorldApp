@@ -17,10 +17,10 @@ def run_around_tests():
 
 async def test_should_get_user() -> None:
     # Arrange & Act
-    await user_dsl.get_user_01()
+    await user_dsl.get_user()
 
     # Assert
-    await user_dsl.assert_response_is_user_01_data()
+    await user_dsl.assert_response_is_user_data()
 
 
 async def test_should_return_not_found_if_user_doesnt_exists():

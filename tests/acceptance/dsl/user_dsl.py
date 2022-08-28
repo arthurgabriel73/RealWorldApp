@@ -25,13 +25,13 @@ class UserDSL:
         bio = fake.pystr()
         self.__bio = bio
 
-    async def get_user_01(self) -> None:
-        random_user = await self._driver.create_random_user()
+    async def get_user(self) -> None:
+        test_user = await self._driver.auth_driver.create_test_user()
 
-        self.__user_id = random_user['id']
+        self.__user_id = test_user['id']
         self._response = await self._driver.get_user(self.__user_id, self._token)  # CHANGE TO SERVICE
 
-    async def assert_response_is_user_01_data(self):
+    async def assert_response_is_user_data(self):
         assert self._response["id"] == self.__user_id
 
     async def get_non_existent_user(self) -> None:
@@ -44,7 +44,7 @@ class UserDSL:
         }
 
     async def update_valid_user(self) -> None:
-        test_user = await self._driver.create_random_user()
+        test_user = await self._driver.auth_driver.create_test_user()
 
         self.__user_id = test_user["id"]
 
