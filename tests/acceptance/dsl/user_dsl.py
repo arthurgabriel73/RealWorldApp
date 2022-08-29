@@ -25,7 +25,11 @@ class UserDSL:
         bio = fake.pystr()
         self.__bio = bio
 
+    async def generate_token(self):
+        self._token = await self._driver.auth_driver.get_token()
+
     async def get_user(self) -> None:
+        await self.generate_token()
         test_user = await self._driver.auth_driver.create_test_user()
 
         self.__user_id = test_user['id']
@@ -44,6 +48,7 @@ class UserDSL:
         }
 
     async def update_valid_user(self) -> None:
+        await self.generate_token()
         test_user = await self._driver.auth_driver.create_test_user()
 
         self.__user_id = test_user["id"]

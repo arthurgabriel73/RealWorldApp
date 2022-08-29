@@ -29,7 +29,7 @@ async def test_should_get_article() -> None:
     # Arrange
     await auth_dsl.login_authorized()
 
-    # Act
+    # Arrange
     await article_dsl.get_article()
 
     # Assert

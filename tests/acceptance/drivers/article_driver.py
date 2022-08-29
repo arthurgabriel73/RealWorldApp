@@ -26,11 +26,14 @@ class ArticleDriver:
 
         return article.json()
 
-    async def create_test_article(self, article_json: dict, token: str) -> dict:
+    async def create_test_article(self, token: str, article_json: dict) -> dict:
         await self.create_test_client()
-
         header = self._authDriver.generate_auth_header(token)
         url = ARTICLES_URL + "/"
         article = await self.__test_client.post(url, headers=header, json=article_json)
 
         return article.json()
+
+    @property
+    def auth_driver(self):
+        return self._authDriver

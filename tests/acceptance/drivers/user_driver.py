@@ -20,7 +20,7 @@ class UserDriver:
     async def get_user(self, user_id: str, token: str) -> dict:
         await self.create_test_client()
 
-        header = AuthDriver.generate_auth_header(token)
+        header = self._authDriver.generate_auth_header(token)
         url = USERS_URL + "/" + user_id
         user = await self.__test_client.get(url, headers=header)
 
