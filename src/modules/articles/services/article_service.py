@@ -2,14 +2,14 @@ from functools import lru_cache
 
 from fastapi import Depends
 
-from exceptions.already_exists import ArticleAlreadyExists
-from exceptions.database_exception import IntegrityError
-from exceptions.not_found import ArticleNotFound
+from src.exceptions.already_exists import ArticleAlreadyExists
+from src.exceptions.database_exception import IntegrityError
+from src.exceptions.not_found import ArticleNotFound
 from src.modules.articles.article_repository import ArticleRepository
 from src.modules.articles.dto.article_dto import ArticleDTO
 from src.modules.articles.repositories.article_repository_impl import article_repository_impl_factory
 from src.modules.users.entities.user_entity import User
-from tools.generate_slug import generate_slug
+from src.tools.generate_slug import generate_slug
 
 
 class ArticleService:

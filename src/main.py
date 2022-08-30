@@ -2,7 +2,7 @@ import uvicorn
 
 from fastapi import FastAPI
 
-from modules.articles.controllers import article_controller
+from src.modules.articles.controllers import article_controller
 from src.modules.auth.controllers import auth_controller
 from src.modules.profiles.controllers import profile_controller
 from src.modules.users.controllers import user_controller

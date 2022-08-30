@@ -17,23 +17,22 @@ class ArticleDriver:
     async def create_test_client(self):
         self.__test_client = client_factory()
 
-    async def get_article(self, slug: str, token: str) -> dict:
+    async def get_article(self, slug: str) -> dict:
         await self.create_test_client()
 
+        token = await self._authDriver.get_token()
         header = self._authDriver.generate_auth_header(token)
         url = ARTICLES_URL + "/" + slug
         article = await self.__test_client.get(url, headers=header)
 
         return article.json()
 
-    async def create_test_article(self, token: str, article_json: dict) -> dict:
+    async def create_test_article(self, article_json: dict) -> dict:
         await self.create_test_client()
+
+        token = await self._authDriver.get_token()
         header = self._authDriver.generate_auth_header(token)
         url = ARTICLES_URL + "/"
         article = await self.__test_client.post(url, headers=header, json=article_json)
 
         return article.json()
-
-    @property
-    def auth_driver(self):
-        return self._authDriver

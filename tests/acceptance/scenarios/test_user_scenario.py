@@ -1,7 +1,7 @@
 import pytest as pytest
 
-from acceptance.dsl.auth_dsl import AuthDSL
-from acceptance.dsl.user_dsl import UserDSL
+from tests.acceptance.dsl.auth_dsl import AuthDSL
+from tests.acceptance.dsl.user_dsl import UserDSL
 
 user_dsl = UserDSL()
 auth_dsl = AuthDSL()
