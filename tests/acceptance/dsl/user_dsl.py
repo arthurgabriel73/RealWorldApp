@@ -11,6 +11,7 @@ class UserDSL:
     def __init__(self):
         self._driver = UserDriver()
         self._authDSL = AuthDSL()
+        self.__user = None
         self.__user_id = ""
         self._response = None
         self.__bio = None
@@ -19,14 +20,22 @@ class UserDSL:
         self.__user_id = ""
         self._response = {}
 
+    def generate_user(self):
+        test_user = {
+            "username": fake.pystr(),
+            "password": fake.password()
+        }
+        self.__user = test_user
+
     def get_fake_bio(self):
         bio = fake.pystr()
         self.__bio = bio
 
     async def get_user(self) -> None:
-        test_user = await self._driver.auth_driver.create_test_user()
+        self.generate_user()
+        self.__user = await self._driver.create_test_user(self.__user)
 
-        self.__user_id = test_user['id']
+        self.__user_id = self.__user['id']
         self._response = await self._driver.get_user(self.__user_id)  # CHANGE TO SERVICE
 
     async def assert_response_is_user_data(self):
@@ -42,12 +51,13 @@ class UserDSL:
         }
 
     async def update_valid_user(self) -> None:
-        test_user = await self._driver.auth_driver.create_test_user()
+        self.generate_user()
+        self.__user = await self._driver.create_test_user(self.__user)
 
-        self.__user_id = test_user["id"]
+        self.__user_id = self.__user["id"]
 
         user_updated = {
-            "username": test_user["username"],
+            "username": self.__user["username"],
             "bio": "test bio",
         }
 

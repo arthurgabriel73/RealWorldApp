@@ -1,5 +1,6 @@
 from acceptance.drivers.client import client_factory
 from acceptance.drivers.auth_driver import AuthDriver
+from modules.auth.controllers.auth_controller import AUTH_URL
 
 from src.modules.users.controllers.user_controller import USERS_URL
 
@@ -36,5 +37,13 @@ class UserDriver:
         url = USERS_URL + "/" + user_id
 
         user = await self.__test_client.put(url, headers=header, json=user_json)
+
+        return user.json()
+
+    async def create_test_user(self, user_json: dict) -> dict:
+        await self.create_test_client()
+
+        url = AUTH_URL + "/signup"
+        user = await self.__test_client.post(url, json=user_json)
 
         return user.json()
