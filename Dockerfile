@@ -1,11 +1,11 @@
 FROM python:3.10
-COPY ./src /app/src
-COPY ./requirements.txt /app/
 
 WORKDIR /app
 
-RUN pip3 install -r requirements.txt
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-EXPOSE 8000
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-CMD ["uvicorn", "src.main:app", "--host=0.0.0.0", "--reload"]
+COPY . .
