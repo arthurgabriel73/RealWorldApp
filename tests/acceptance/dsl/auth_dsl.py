@@ -1,4 +1,4 @@
-from acceptance.drivers.auth_driver import AuthDriver
+from tests.acceptance.drivers.auth_driver import AuthDriver
 from src.exceptions.auth import CouldNotValidate
 
 

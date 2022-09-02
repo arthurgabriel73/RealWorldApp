@@ -1,5 +1,5 @@
-from acceptance.drivers.user_driver import UserDriver
-from acceptance.dsl.auth_dsl import AuthDSL
+from tests.acceptance.drivers.user_driver import UserDriver
+from tests.acceptance.dsl.auth_dsl import AuthDSL
 from src.exceptions.not_found import UserNotFound
 
 from faker import Faker

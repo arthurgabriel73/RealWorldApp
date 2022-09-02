@@ -1,10 +1,10 @@
-from acceptance.drivers.article_driver import ArticleDriver
-from acceptance.dsl.auth_dsl import AuthDSL
+from tests.acceptance.drivers.article_driver import ArticleDriver
+from tests.acceptance.dsl.auth_dsl import AuthDSL
 from src.exceptions.not_found import ArticleNotFound
 
 from faker import Faker
 
-from tools.generate_slug import generate_slug
+from src.tools.generate_slug import generate_slug
 
 fake = Faker()
 

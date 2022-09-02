@@ -1,5 +1,5 @@
-from acceptance.drivers.auth_driver import AuthDriver
-from acceptance.drivers.client import client_factory
+from tests.acceptance.drivers.auth_driver import AuthDriver
+from tests.acceptance.drivers.client import client_factory
 from src.modules.articles.controllers.article_controller import ARTICLES_URL
 
 from faker import Faker

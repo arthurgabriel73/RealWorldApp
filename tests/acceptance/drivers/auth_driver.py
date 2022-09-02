@@ -1,4 +1,4 @@
-from acceptance.drivers.client import client_factory
+from tests.acceptance.drivers.client import client_factory
 from src.modules.auth.controllers.auth_controller import AUTH_URL
 from faker import Faker
 

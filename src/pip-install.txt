@@ -4,3 +4,40 @@ pip install fastapi psycopg2-binary sqlalchemy asyncpg uvicorn python-jose[crypt
     - pytest-tornasync
     - pytest-trio
     - pytest-twisted
+
+**to run pytest: python -m pytest**
+
+
+Tutorial postgres container with docker:
+1 - docker run --name fastapi-postgres -e POSTGRES_PASSWORD=password123 -d -p 5432:5432 postgres:alpine
+2 - docker exec -it fastapi-postgres bash
+3 - psql -U postgres
+4 - create database fastapi_database;
+5 - create user myuser with encrypted password 'password123';
+6 - grant all privileges on database fastapi_database to myuser;
+7 - \c fastapi_database
+8 - psql -h localhost -p 5432 postgres
+Now it is accessible from outside this container
+
+Tutorial fastapi container with docker:
+1 - config docker file:
+
+        FROM python:3.10
+        COPY ./src /app/src
+        COPY ./requirements.txt /app/
+
+        WORKDIR /app
+
+        RUN pip3 install -r requirements.txt
+
+        EXPOSE 8000
+
+        CMD ["uvicorn", "src.main:app", "--host=0.0.0.0", "--reload"]
+
+2 - docker build -t fastapi-application:0.1 .
+3 - docker run -p 8000:8000 --name fastapi-application:0.1
+
+
+deploy:
+docker-compose run app alembic revision --autogenerate -m "New Migration"
+docker-compose run app alembic upgrade head

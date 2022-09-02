@@ -1,6 +1,6 @@
-from acceptance.drivers.client import client_factory
-from acceptance.drivers.auth_driver import AuthDriver
-from modules.auth.controllers.auth_controller import AUTH_URL
+from tests.acceptance.drivers.client import client_factory
+from tests.acceptance.drivers.auth_driver import AuthDriver
+from src.modules.auth.controllers.auth_controller import AUTH_URL
 
 from src.modules.users.controllers.user_controller import USERS_URL
 
