@@ -9,7 +9,7 @@ from src.modules.articles.controllers import article_controller
 from src.modules.auth.controllers import auth_controller
 from src.modules.profiles.controllers import profile_controller
 from src.modules.users.controllers import user_controller
-
+import starlette.responses as _responses
 app = FastAPI(
     title='Real World App - API',
     description='This project is made to learn how to create a complete API using FastAPI and SQLAlchemy ORM'
@@ -18,7 +18,7 @@ app = FastAPI(
 
 @app.get("/")
 async def read_root():
-    return "Welcome to Real World App!" " Access this url + /docs to use"
+    return _responses.RedirectResponse("/docs")
 
 app.include_router(auth_controller.auth_router)
 app.include_router(user_controller.user_router)
