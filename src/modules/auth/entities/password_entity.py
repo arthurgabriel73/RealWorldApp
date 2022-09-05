@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
-from src.config import settings
-from src.tools.password_tools import verify_password
+from config import settings
+from tools.password_tools import verify_password
 
 
 class Password(settings.settings_factory().DBBaseModel):

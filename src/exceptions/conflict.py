@@ -1,4 +1,4 @@
-from src.exceptions.api_exception import APIException
+from exceptions.api_exception import APIException
 
 
 class ConflictOnUpdate(APIException):

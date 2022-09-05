@@ -2,16 +2,15 @@ from functools import lru_cache
 
 from fastapi import Depends
 
-from src.config.settings import settings_factory, Settings
-from src.exceptions.database_exception import IntegrityError
-from src.exceptions.not_found import UserNotFound, FollowRelationNotFound
-from src.modules.profiles.dto.follow_dto import FollowRelationDTO
-from src.modules.profiles.dto.profile_dto import ProfileDTO
-from src.modules.profiles.profile_repository import ProfileRepository
-from src.modules.profiles.repositories.profile_repositoy_impl import profile_repository_impl_factory
-from src.modules.users.entities.user_entity import User
-from src.modules.users.repositories.user_repository_impl import user_repository_impl_factory
-from src.modules.users.user_repository import UserRepository
+from config.settings import settings_factory, Settings
+from exceptions.not_found import UserNotFound, FollowRelationNotFound
+from modules.profiles.dto.follow_dto import FollowRelationDTO
+from modules.profiles.dto.profile_dto import ProfileDTO
+from modules.profiles.profile_repository import ProfileRepository
+from modules.profiles.repositories.profile_repositoy_impl import profile_repository_impl_factory
+from modules.users.entities.user_entity import User
+from modules.users.repositories.user_repository_impl import user_repository_impl_factory
+from modules.users.user_repository import UserRepository
 
 
 class ProfileService:

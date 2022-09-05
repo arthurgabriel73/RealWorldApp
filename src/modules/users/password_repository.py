@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from src.modules.auth.entities.password_entity import Password
+from modules.auth.entities.password_entity import Password
 
 
 class PasswordRepository(ABC):

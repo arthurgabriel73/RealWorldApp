@@ -2,18 +2,18 @@ from functools import lru_cache
 
 from fastapi import Depends
 
-from src.exceptions.already_exists import UserAlreadyExists
-from src.exceptions.conflict import ConflictOnUpdate
-from src.exceptions.database_exception import IntegrityError, NoResultFound
-from src.exceptions.not_found import UserNotFound
-from src.modules.users.entities.user_entity import User
-from src.modules.users.password_repository import PasswordRepository
-from src.modules.users.repositories.password_repository_impl import password_repository_impl_factory
-from src.modules.users.user_repository import UserRepository
-from src.modules.users.repositories.user_repository_impl import (
+from exceptions.already_exists import UserAlreadyExists
+from exceptions.conflict import ConflictOnUpdate
+from exceptions.database_exception import IntegrityError, NoResultFound
+from exceptions.not_found import UserNotFound
+from modules.users.entities.user_entity import User
+from modules.users.password_repository import PasswordRepository
+from modules.users.repositories.password_repository_impl import password_repository_impl_factory
+from modules.users.user_repository import UserRepository
+from modules.users.repositories.user_repository_impl import (
     user_repository_impl_factory,
 )
-from src.modules.users.dto.user_dto import UserDTO, UserComplete, UserUpdate
+from modules.users.dto.user_dto import UserDTO, UserComplete, UserUpdate
 
 
 class UserService:
@@ -41,9 +41,11 @@ class UserService:
         except IntegrityError:
             raise UserAlreadyExists(username)
 
-    async def update_user(self, user_id: str, user: UserUpdate) -> UserComplete:
+    async def update_user(self, user_id: str, user_to_update: UserUpdate, logged_user) -> UserComplete:
         try:
-            user = await self.__user_repo.update_user(user_id, user)
+            user = None
+            if logged_user.id == user_id:
+                user = await self.__user_repo.update_user(user_id, user_to_update)
             return user
         except IntegrityError:
             raise ConflictOnUpdate(user_id)

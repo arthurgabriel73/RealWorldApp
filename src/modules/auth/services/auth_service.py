@@ -3,18 +3,18 @@ from functools import lru_cache
 from fastapi import Depends
 from jose import jwt
 
-from src.exceptions.already_exists import UserAlreadyExists
-from src.exceptions.database_exception import IntegrityError
-from src.modules.auth.dto.token_dto import Token
-from src.config.settings import Settings, settings_factory
-from src.exceptions.auth import CouldNotValidate, InvalidPassword, TokenHasExpired
-from src.exceptions.not_found import UserNotFound
-from src.modules.auth.entities.password_entity import Password
-from src.modules.users.dto.user_dto import IncomingUserDTO, UserComplete, UserLogin
-from src.modules.users.entities.user_entity import User
-from src.modules.users.password_repository import PasswordRepository
-from src.modules.users.repositories.password_repository_impl import password_repository_impl_factory
-from src.modules.users.services.user_service import UserService, user_service_factory
+from exceptions.already_exists import UserAlreadyExists
+from exceptions.database_exception import IntegrityError
+from modules.auth.dto.token_dto import Token
+from config.settings import Settings, settings_factory
+from exceptions.auth import CouldNotValidate, InvalidPassword, TokenHasExpired
+from exceptions.not_found import UserNotFound
+from modules.auth.entities.password_entity import Password
+from modules.users.dto.user_dto import IncomingUserDTO, UserComplete, UserLogin
+from modules.users.entities.user_entity import User
+from modules.users.password_repository import PasswordRepository
+from modules.users.repositories.password_repository_impl import password_repository_impl_factory
+from modules.users.services.user_service import UserService, user_service_factory
 
 
 class AuthService:

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
 
-from src.config import settings
+from config import settings
 
 
 class User(settings.settings_factory().DBBaseModel):

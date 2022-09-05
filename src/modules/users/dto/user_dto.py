@@ -1,7 +1,7 @@
 from pydantic.class_validators import Optional
 from pydantic import BaseModel, EmailStr, validator
 
-from src.tools.password_tools import check_password_strength, get_hash, get_salt
+from tools.password_tools import check_password_strength, get_hash, get_salt
 
 
 class UserDTO(BaseModel):

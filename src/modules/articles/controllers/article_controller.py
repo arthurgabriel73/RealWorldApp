@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, Body
 
-from src.modules.auth.controllers.auth_controller import get_user_from_token
-from src.modules.users.entities.user_entity import User
-from src.config.database_conn import get_session
+from modules.auth.controllers.auth_controller import get_user_from_token
+from modules.users.entities.user_entity import User
+from config.database_conn import get_session
 
-from src.modules.articles.services.article_service import ArticleService, article_service_factory
-from src.modules.articles.dto.article_dto import ArticleDTO, ArticleComplete
+from modules.articles.services.article_service import ArticleService, article_service_factory
+from modules.articles.dto.article_dto import ArticleDTO, ArticleComplete
 
 ARTICLES_URL = '/articles'
 

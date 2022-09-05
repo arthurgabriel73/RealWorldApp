@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from src.modules.profiles.dto.follow_dto import FollowRelationDTO
-from src.modules.users.entities.user_entity import User
+from modules.profiles.dto.follow_dto import FollowRelationDTO
+from modules.users.entities.user_entity import User
 
 
 class ProfileRepository(ABC):

@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends
 
-from src.config.database_conn import get_session
-from src.modules.auth.controllers.auth_controller import get_user_from_token
-from src.modules.profiles.dto.follow_dto import FollowRelationDTO
-from src.modules.profiles.dto.profile_dto import ProfileDTO
-from src.modules.profiles.services.profile_service import profile_service_factory, ProfileService
+from config.database_conn import get_session
+from modules.auth.controllers.auth_controller import get_user_from_token
+from modules.profiles.dto.follow_dto import FollowRelationDTO
+from modules.profiles.dto.profile_dto import ProfileDTO
+from modules.profiles.services.profile_service import profile_service_factory, ProfileService
 
-from src.modules.users.entities.user_entity import User
+from modules.users.entities.user_entity import User
 
 PROFILES_URL = '/profiles'
 

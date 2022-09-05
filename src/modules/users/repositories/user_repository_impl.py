@@ -6,14 +6,14 @@ import sqlalchemy.exc
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine
 
-from src.config.database_conn import db_engine_factory
-from src.config.database_conn import get_session
-from src.exceptions.database_exception import IntegrityError, NoResultFound
+from config.database_conn import db_engine_factory
+from config.database_conn import get_session
+from exceptions.database_exception import IntegrityError, NoResultFound
 
-from src.modules.users.entities.user_entity import User
-from src.modules.users.user_repository import UserRepository
-from src.modules.users.dto.user_dto import UserDTO, UserUpdate
-from src.tools.uuid_tools import generate_uuid
+from modules.users.entities.user_entity import User
+from modules.users.user_repository import UserRepository
+from modules.users.dto.user_dto import UserDTO, UserUpdate
+from tools.uuid_tools import generate_uuid
 
 
 class UserRepositoryImpl(UserRepository):

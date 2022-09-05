@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from src.modules.articles.dto.article_dto import ArticleDTO
-from src.modules.articles.entities.article_entity import Article
-from src.modules.users.entities.user_entity import User
+from modules.articles.dto.article_dto import ArticleDTO
+from modules.articles.entities.article_entity import Article
+from modules.users.entities.user_entity import User
 
 
 class ArticleRepository(ABC):

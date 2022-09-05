@@ -12,7 +12,7 @@ def check_password_strength(password: str) -> str:
     has_at_least_one_uppercase = re.search(r"[A-Z]", password) is not None
     has_at_least_one_lowercase = re.search(r"[a-z]", password) is not None
     has_at_least_one_symbol = (
-            re.search(r"[ !#$%&'()*+,-./[\\\]^_`{|}~" + r'"]', password) is not None
+            re.search(r"[ @!#$%&'()*+,-./[\\\]^_`{|}~" + r'"]', password) is not None
     )
 
     strong_password = all(

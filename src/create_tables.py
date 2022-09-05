@@ -1,8 +1,8 @@
 import asyncio
 import warnings
-from src.config.settings import settings
-from src.config.database_conn import __engine
-import src.modules.__all_models
+from config.settings import settings
+from config.database_conn import __engine
+import modules.__all_models
 
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)

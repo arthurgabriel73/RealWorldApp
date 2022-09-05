@@ -8,7 +8,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 class Settings(BaseSettings):
     API_V1_STR: str = '/api/v1'
-    DB_URL: str = "postgresql+asyncpg://postgres:c4c232a4@localhost:5432/real_world_app"
+    DB_URL: str = "postgresql+asyncpg://gcqifvqxeqyaqm:4d6c43629c435e12086a5a0487820f6167bbc85dbdac8ed45a2c6" \
+                  "ca7d024e309@ec2-3-208-79-113.compute-1.amazonaws.com:5432/d8v9e5nner8gjt"
     DBBaseModel = declarative_base()
 
     TOKEN_SECRET: str = '-0sG5ezMEHZ9zu3g7pbCIQcK1Dhg5I4Y3SEiq0OB1F4'

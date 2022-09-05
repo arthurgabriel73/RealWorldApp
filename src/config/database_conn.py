@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
 
-from src.config.settings import settings_factory
+from config.settings import settings_factory
 
 __engine: AsyncEngine = create_async_engine(settings_factory().DB_URL)
 

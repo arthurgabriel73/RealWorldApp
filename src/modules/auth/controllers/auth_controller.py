@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Body, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
-from src.modules.auth.dto.token_dto import Token
-from src.modules.auth.services.auth_service import auth_service_factory
-from src.modules.users.dto.user_dto import IncomingUserDTO, UserDTO, UserLogin, UserComplete
-from src.modules.auth.services.auth_service import AuthService
-from src.modules.users.entities.user_entity import User
+from modules.auth.dto.token_dto import Token
+from modules.auth.services.auth_service import auth_service_factory
+from modules.users.dto.user_dto import IncomingUserDTO, UserDTO, UserLogin, UserComplete
+from modules.auth.services.auth_service import AuthService
+from modules.users.entities.user_entity import User
 
 AUTH_URL = "/auth"
 

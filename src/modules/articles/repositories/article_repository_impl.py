@@ -5,12 +5,12 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 from sqlalchemy.future import select
 
-from src.config.database_conn import get_session, db_engine_factory
-from src.exceptions.database_exception import IntegrityError
-from src.modules.articles.article_repository import ArticleRepository
-from src.modules.articles.dto.article_dto import ArticleDTO, ArticleComplete
-from src.modules.articles.entities.article_entity import Article
-from src.modules.users.entities.user_entity import User
+from config.database_conn import get_session, db_engine_factory
+from exceptions.database_exception import IntegrityError
+from modules.articles.article_repository import ArticleRepository
+from modules.articles.dto.article_dto import ArticleDTO, ArticleComplete
+from modules.articles.entities.article_entity import Article
+from modules.users.entities.user_entity import User
 
 
 class ArticleRepositoryImpl(ArticleRepository):

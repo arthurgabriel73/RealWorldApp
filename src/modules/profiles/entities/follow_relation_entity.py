@@ -1,7 +1,6 @@
 from sqlalchemy import Column, String, ForeignKey, Integer
-from sqlalchemy.orm import relationship
 
-from src.config import settings
+from config import settings
 
 
 class FollowRelation(settings.settings_factory().DBBaseModel):

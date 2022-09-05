@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
-from src.config import settings
+from config import settings
 
 
 class Article(settings.settings_factory().DBBaseModel):
