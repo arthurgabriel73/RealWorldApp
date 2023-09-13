@@ -11,3 +11,7 @@
 /requirements.txt
 /.idea
 /src/pip-install.txt
+*.pyc
+*.pyo
+build/
+dist/
